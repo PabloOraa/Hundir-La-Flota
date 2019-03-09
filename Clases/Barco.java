@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Clases;
 
 /**
- *
- * @author Pabli
+ * Clase Barcos que representa los barcos usados por los jugadores
+ * @Version 1.0
+ * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Barco
 {

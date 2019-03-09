@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Clases;
 
 import java.util.ArrayList;
 
 /**
- * Clase jugador que representa a cada uno de los miembros de la partida
+ * Clase Jugador que representa a cada uno de los miembros de la partida
  * @Version 1.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */

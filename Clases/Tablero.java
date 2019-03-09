@@ -1,7 +1,7 @@
 package Clases;
 
 /**
- * Clase jugador que representa el tablero de un jugador
+ * Clase Tablero que representa el tablero de un jugador
  * @Version 1.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
