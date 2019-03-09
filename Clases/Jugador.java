@@ -36,13 +36,33 @@ public class Jugador
         listaBarcos.add(new Barco("lancha",1));
     }
     
-    public char Disparar(Jugador j2, int fila, char columna)
+    public String Disparar(Jugador j2, int fila, char columna)
     {
         return j2.comprobarDisparo(fila,columna);
     }
     
-    public char comprobarDisparo(int fila, int columna)
+    public String comprobarDisparo(int fila, char columna)
     {
-        if(tableroBarcos[fila][columna])
+        char res;
+        String resultado;
+        if(Textos.EMPTY != tableroBarcos.getPos(fila,columna))
+        {
+            res = Textos.RIGHTLETTER;
+            resultado = Textos.RIGHT;
+        }
+        else
+        {
+            res = Textos.FAILLETTER;
+            resultado = Textos.FAIL;
+        }
+        referenciaTablero(res);
+        return resultado;
     }
+
+    private void referenciaTablero(char res)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

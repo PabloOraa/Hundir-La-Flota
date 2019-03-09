@@ -102,4 +102,48 @@ public class Tablero
                 return 10;
         }
     }
+    
+    /**
+     * Comprueba que el barco que se quiere colocar en esa posición es posible,
+     * es decir, que encaja en tamaño en la posición horizontal elegida.
+     * @param tamBarco tamaño del barco a introducir
+     * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @return true si es posible y false si no lo es
+     */
+    public boolean comprobarHorizontal(int tamBarco, int fila)
+    {
+        return fila > 0 && fila+tamBarco < tablero.length-1;
+    }
+    
+    /**
+     * Comprueba que el barco que se quiere colocar en esa posición es posible,
+     * es decir, que encaja en tamaño en la posición vertical elegida.
+     * @param tamBarco tamaño del barco a introducir
+     * @param columna columna en la que se desea introducir la posición del barco
+     * @return true si es posible y false si no lo es
+     */
+    public boolean comprobarVertical(int tamBarco, char columna)
+    {        
+        return getCoord(columna) > 0 && getCoord(columna)+tamBarco < tablero.length;
+    }
+    
+    /**
+     * Comprueba que el barco que se quiere colocar en esa posición es posible,
+     * es decir, que encaja en tamaño en la posición diagonal elegida.
+     * @param tamBarco tamaño del barco a introducir
+     * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @param columna columna en la que se desea introducir la primera posición del barco
+     * @param carDir caracter que marca si es Derecha o Izquiera para indicar el sentido de la diagonal
+     * @return true si es posible y false si no lo es
+     */
+    public boolean comprobarDiagonal(int tamBarco, int fila, char columna, char carDir)
+    {
+        if(getCoord(columna) > 0  && getCoord(columna)+tamBarco < tablero.length)
+            if(carDir == Textos.DIAGONAL)
+                return (fila > 0  && fila+tamBarco < tablero.length);
+            else
+                return (fila < tablero.length  && fila-tamBarco > 0);
+        else
+            return false;
+    }
 }
