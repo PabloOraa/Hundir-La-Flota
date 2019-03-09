@@ -1,7 +1,7 @@
 package Clases;
 
 /**
- * Yextos de la aplicación
+ * Textos de la aplicación
  * @Version 1.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
