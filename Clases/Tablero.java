@@ -4,8 +4,6 @@ import com.csvreader.CsvReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
@@ -50,10 +48,9 @@ public class Tablero
         for (char[] tablero1 : tablero)
         {
             for (int i = 0; i < tablero1.length; i++)
-                System.out.println(tablero1[i]);
-            System.out.println(Textos.LINE);
+                System.out.print(Textos.VERTICALBAR + "" + tablero1[i] + "" + Textos.VERTICALBAR);
+            System.out.println("\n"+Textos.LINE);
         }
-        System.out.println(Textos.LINE);
     }
     
     /**
@@ -92,25 +89,25 @@ public class Tablero
         switch(columna)
         {
             case 'A':
-                return 1;
+                return 0;
             case 'B':
-                return 2;
+                return 1;
             case 'C':
-                return 3;
+                return 2;
             case 'D':
-                return 4;
+                return 3;
             case 'E':
-                return 5;
+                return 4;
             case 'F':
-                return 6;
+                return 5;
             case 'G':
-                return 7;
+                return 6;
             case 'H':
-                return 8;
+                return 7;
             case 'I':
-                return 9;
+                return 8;
             default: /*Se considera el Default la letra J*/
-                return 10;
+                return 9;
         }
     }
     
@@ -123,7 +120,7 @@ public class Tablero
      */
     public boolean comprobarVertical(int tamBarco, int fila)
     {
-        return fila > 0 && fila+tamBarco < tablero.length-1;
+        return fila >= 0 && fila+tamBarco < tablero.length;
     }
     
     /**
@@ -135,7 +132,7 @@ public class Tablero
      */
     public boolean comprobarHorizontal(int tamBarco, char columna)
     {        
-        return getCoord(columna) > 0 && getCoord(columna)+tamBarco < tablero.length;
+        return getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length;
     }
     
     /**
@@ -149,11 +146,11 @@ public class Tablero
      */
     public boolean comprobarDiagonal(int tamBarco, int fila, char columna, char carDir)
     {
-        if(getCoord(columna) > 0  && getCoord(columna)+tamBarco < tablero.length)
+        if(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length)
             if(carDir == Textos.DIAGONAL)
-                return (fila > 0  && fila+tamBarco < tablero.length);
+                return (fila >= 0  && fila+tamBarco < tablero.length);
             else
-                return (fila < tablero.length  && fila-tamBarco > 0);
+                return (fila < tablero.length  && fila-tamBarco >= 0);
         else
             return false;
     }
@@ -201,22 +198,23 @@ public class Tablero
      */
     public void insertar(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
     {
-        if(dir == Textos.HORIZONTAL)
+        fila = fila-1; //Ajusta la fila elegida a la matriz
+        if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
             if(comprobarHorizontal(brc.getFigure().length(), columna))
-                insertarHorizontal(fila, columna, brc);
+                insertarHorizontal(fila, Character.toUpperCase(columna), brc);
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
-        else if(dir == Textos.VERTICAL)
+        else if(Character.toUpperCase(dir) == Textos.VERTICAL)
             if(comprobarVertical(brc.getFigure().length(), fila))
-                insertarVertical(fila,columna,brc);
+                insertarVertical(fila,Character.toUpperCase(columna),brc);
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
         else 
-            if(comprobarDiagonal(brc.getFigure().length(), fila, columna, dir))
-                if(dir == Textos.DIAGONAL)
-                    insertarDiagonal(fila,columna,brc);
+            if(comprobarDiagonal(brc.getFigure().length(), fila, columna, Character.toUpperCase(dir)))
+                if(Character.toUpperCase(dir) == Textos.DIAGONAL)
+                    insertarDiagonal(fila,Character.toUpperCase(columna),brc);
                 else
-                    insertarDiagonalInversa(fila,columna,brc);
+                    insertarDiagonalInversa(fila,Character.toUpperCase(columna),brc);
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
     }
@@ -229,7 +227,7 @@ public class Tablero
      */
     private void insertarHorizontal(int fila, char columna, Barco brc)
     {
-        for (int i = getCoord(columna); i < brc.getFigure().length(); i++)
+        for (int i = getCoord(columna), j = 0; j < brc.getFigure().length(); i++,j++)
             tablero[fila][i] = brc.getFigure().charAt(0);
     }
 
@@ -241,7 +239,7 @@ public class Tablero
      */
     private void insertarVertical(int fila, char columna, Barco brc)
     {
-        for (int i = fila; i < brc.getFigure().length(); i++)
+        for (int i = fila, j = 0; j < brc.getFigure().length(); i++,j++)
             tablero[i][getCoord(columna)] = brc.getFigure().charAt(0);
     }
 
@@ -253,7 +251,7 @@ public class Tablero
      */
     private void insertarDiagonal(int fila, char columna, Barco brc)
     {
-        for (int i = fila, j = getCoord(columna); i < brc.getFigure().length(); i++,j++)
+        for (int i = fila, j = getCoord(columna), k = 0; k < brc.getFigure().length(); i++,j++, k++)
             tablero[i][j] = brc.getFigure().charAt(0);
     }
 
@@ -265,7 +263,7 @@ public class Tablero
      */
     private void insertarDiagonalInversa(int fila, char columna, Barco brc)
     {
-        for (int i = fila, j = getCoord(columna); i < brc.getFigure().length(); i--,j--)
+        for (int i = fila, j = getCoord(columna), k = 0; k < brc.getFigure().length(); i--,j--, k++)
             tablero[i][j] = brc.getFigure().charAt(0);
     }
 }

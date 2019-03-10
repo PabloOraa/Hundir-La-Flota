@@ -68,7 +68,11 @@ public interface Textos
     /**
      * Linea entre las casillas de los tableros de cada jugador
      */
-    String LINE = "-----------------------------";
+    String LINE = "------------------------------";
+    /**
+     * Caracter que hace de barra vertical para simular el tablero
+     */
+    char VERTICALBAR = '|';
     /**
      * Caracter X utilizado en la matriz secundaria para marcar que ha fallado
      */
