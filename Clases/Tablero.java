@@ -116,28 +116,47 @@ public class Tablero
      * es decir, que encaja en tamaño en la posición horizontal elegida.
      * @param tamBarco tamaño del barco a introducir
      * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarVertical(int tamBarco, int fila)
+    public boolean comprobarVertical(int tamBarco, int fila, char columna)
     {
-        return fila >= 0 && fila+tamBarco < tablero.length;
+        if(!(fila >= 0 && fila+tamBarco < tablero.length))
+            return false;
+        
+        for (int i = fila-1, j = getCoord(Character.toUpperCase(columna)), k = 0; k < tamBarco+2; i++, k++)
+            if(i > 0 && i < 10)
+                if(tablero[i][j] != 'A')
+                    return false;
+        
+        return true;
     }
     
     /**
      * Comprueba que el barco que se quiere colocar en esa posición es posible,
      * es decir, que encaja en tamaño en la posición vertical elegida.
      * @param tamBarco tamaño del barco a introducir
+     * @param fila fila en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarHorizontal(int tamBarco, char columna)
-    {        
-        return getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length;
+    public boolean comprobarHorizontal(int tamBarco, int fila, char columna)
+    {       
+        if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length))
+            return false;
+        
+        for (int i = fila, j = getCoord(Character.toUpperCase(columna))-1, k = 0; k < tamBarco+2; j++, k++)
+            if(j > 0 && j < 10)
+                if(tablero[i][j] != 'A')
+                    return false;
+        
+        return true;
     }
     
     /**
      * Comprueba que el barco que se quiere colocar en esa posición es posible,
-     * es decir, que encaja en tamaño en la posición diagonal elegida.
+     * es decir, que encaja en tamaño en la posición diagonal elegida y no hay
+     * ningún valor en la misma casilla o contigua.
      * @param tamBarco tamaño del barco a introducir
      * @param fila fila en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la primera posición del barco
@@ -148,11 +167,27 @@ public class Tablero
     {
         if(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length)
             if(carDir == Textos.DIAGONAL)
-                return (fila >= 0  && fila+tamBarco < tablero.length);
+                if(!(fila >= 0  && fila+tamBarco < tablero.length))
+                    return false;
             else
-                return (fila < tablero.length  && fila-tamBarco >= 0);
+                if(!(fila < tablero.length  && fila-tamBarco >= 0))
+                    return false;
         else
             return false;
+        
+        if(carDir == Textos.DIAGONAL)
+        {    
+            for (int i = fila-1, j = getCoord(Character.toUpperCase(columna))-1, k = 0; k < tamBarco+2; i++,j++, k++)
+                if((i > 0 && i < 10) && (j > 0 && j < 10))
+                    if(tablero[i][j] != 'A')
+                        return false;
+        }
+        else
+            for (int i = fila-1, j = getCoord(Character.toUpperCase(columna))-1, k = 0; k < tamBarco+2; i++,j++, k++)
+                if((i > 0 && i < 10) && (j > 0 && j < 10))
+                    if(tablero[i][j] != 'A')
+                        return false;            
+        return true;
     }
     
     /**
@@ -180,10 +215,10 @@ public class Tablero
             }
         } catch (FileNotFoundException ex )
         {
-            throw new ExcepcionesBarco(Textos.FILENOTFOUND);
+            System.err.println(Textos.FILENOTFOUND);
         } catch (IOException ex)
         {
-            throw new ExcepcionesBarco(Textos.READERROR);
+            System.err.println(Textos.READERROR);
         }
     }
 
@@ -200,12 +235,12 @@ public class Tablero
     {
         fila = fila-1; //Ajusta la fila elegida a la matriz
         if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
-            if(comprobarHorizontal(brc.getFigure().length(), columna))
+            if(comprobarHorizontal(brc.getFigure().length(), fila, columna))
                 insertarHorizontal(fila, Character.toUpperCase(columna), brc);
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
         else if(Character.toUpperCase(dir) == Textos.VERTICAL)
-            if(comprobarVertical(brc.getFigure().length(), fila))
+            if(comprobarVertical(brc.getFigure().length(), fila, columna))
                 insertarVertical(fila,Character.toUpperCase(columna),brc);
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
