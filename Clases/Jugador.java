@@ -30,6 +30,26 @@ public class Jugador
         listaBarcos.add(new Barco("submarino",2));
         listaBarcos.add(new Barco("lancha",1));
     }
+
+    public String getNickname()
+    {
+        return nickname;
+    }
+
+    public Tablero getTableroBarcos()
+    {
+        return tableroBarcos;
+    }
+
+    public Tablero getTabletoResultados()
+    {
+        return tabletoResultados;
+    }
+
+    public ArrayList<Barco> getListaBarcos()
+    {
+        return listaBarcos;
+    }
     
     public String Disparar(Jugador j2, int fila, char columna)
     {

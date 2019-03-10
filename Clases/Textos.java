@@ -27,9 +27,42 @@ public interface Textos
     * Texto cuando se acierta y disparo y la vida del barco llega a 0
     */
     String ENDOFSHIP = "HUNDIDO";
+    /**
+     * Texto que representa el Portaaviones, el barco más grande de todos
+     */
+    String PORTAAVIONES = "Portaaviones";
+    /**
+     * Cadena que representa la figura del portaaviones
+     */
+    String PORTAAVIONESFIGURE = "PPPPP";
+    /**
+     * Texto que representa el Submarino
+     */
+    String SUBMARINO = "Submarino";
+    /**
+     * Cadena que representa la figura del Submarino
+     */
+    String SUBMARINOFIGURE = "SS";
+    /**
+     * Texto que representa el Buque
+     */
+    String BUQUE = "Buque";
+    /**
+     * Cadena que representa la figura del Buque
+     */
+    String BUQUEFIGURE = "BBB";
+    /**
+     * Texto que representa la Lancha
+     */
+    String LANCHA = "Lancha";
+    /**
+     * Cadena que representa la figura de la Lancha
+     */
+    String LANCHAFIGURE = "L";
+    
     String ROW = "Elige la fila";
     /**
-     * Caracters que marca que no hay nada en esa casilla
+     * Caracter A que marca que no hay nada en esa casilla
      */
     char EMPTY = 'A';
     /**
@@ -37,19 +70,39 @@ public interface Textos
      */
     String LINE = "-----------------------------";
     /**
-     * Caracter utilizado en la matriz secundaria para marcar que ha fallado
+     * Caracter X utilizado en la matriz secundaria para marcar que ha fallado
      */
     char FAILLETTER = 'X';
     /**
-     * Caracter utilizado en la matriz secundaria para marcar que ha acertado
+     * Caracter O utilizado en la matriz secundaria para marcar que ha acertado
      */
     char RIGHTLETTER = 'O';
     /**
-     * Caracter que indica  que el barco situado en diagonal va hacia la derecha
+     * Caracter D que indica  que el barco situado en diagonal va hacia la derecha
      */
     char DIAGONAL = 'D';
     /**
-     * Caracter que indica  que el barco situado en diagonal va hacia la izquierda
+     * Caracter I que indica  que el barco situado en diagonal va hacia la izquierda
      */
     char INVERSEDIAGONAL = 'I';
+    /**
+     * Caracter H que indica que el barco está situado en horizontal
+     */
+    char HORIZONTAL = 'H';
+    /**
+     * Caracter V que indica que el barco está situado en horizontal
+     */
+    char VERTICAL = 'V';
+    /**
+     * Texto que indica que no se ha encontrado el archivo
+     */
+    String FILENOTFOUND = "Archivo no encontrado";
+    /**
+     * Texto que indica que hay un error al leer el archivo
+     */
+    String READERROR = "Error al leer el archivo";
+    /**
+     * Texto que indica que el barco es demasiado grande para la posición elegida.
+     */
+    String TOOBIGSHIP = "El barco no se puede situar en la posición indicada";
 }
