@@ -58,24 +58,24 @@ public class Tablero
      * <br/><br/>
      * Metodo utilizado de cara al usuario de la clase en función de los datos 
      * introducidos por el jugador
-     * @param fila numero de fila en la que se busca el valor
+     * @param fila numero de fila entre 1 y 10 en la que se busca el valor
      * @param columna caracter de la matriz que marca la columna a buscar seleccionada por el usuario
      * @return char que puede ser 'A','P','B','S','L' en caso del tablero principal y 'X','A','O' en caso del tablero secundario
      */
     public char getPos(int fila, char columna)
     {
-        return tablero[fila][getCoord(columna)];
+        return tablero[fila-1][getCoord(Character.toUpperCase(columna))];
     }
     
     /**
      * Obtiene el caracter que haya en la posición seleccionada por el usuario
-     * @param fila numero de fila en la que se busca el valor
+     * @param fila numero de fila entre 1 y 10 en la que se busca el valor
      * @param columna numero de la matriz quemarca la columna a buscar
      * @return char que puede ser 'A','P','B','S','L' en caso del tablero principal y 'X','A','O' en caso del tablero secundario
      */
     public char getPos(int fila, int columna)
     {
-        return tablero[fila][columna];
+        return tablero[fila-1][columna];
     }
     
     /**
@@ -300,5 +300,17 @@ public class Tablero
     {
         for (int i = fila, j = getCoord(columna), k = 0; k < brc.getFigure().length(); i--,j--, k++)
             tablero[i][j] = brc.getFigure().charAt(0);
+    }
+    
+    /**
+     * Guarda en el tablero el resultado del disparo en la posición indicada con
+     * X en caso de haber fallado y O en caso de acertar.
+     * @param fila Fila a introducir el resultado.
+     * @param columna Columna a introducir el resultado.
+     * @param res X u O en caso del restulado del disparo.
+     */
+    public void insertarResultado(int fila, int columna, char res)
+    {
+        tablero[fila][columna] = res;
     }
 }

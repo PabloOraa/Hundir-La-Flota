@@ -26,7 +26,7 @@ public interface Textos
    /**
     * Texto cuando se acierta y disparo y la vida del barco llega a 0
     */
-    String ENDOFSHIP = "HUNDIDO";
+    String ENDOFSHIP = "Hundido";
     /**
      * Texto que representa el Portaaviones, el barco más grande de todos
      */
@@ -109,4 +109,8 @@ public interface Textos
      * Texto que indica que el barco es demasiado grande para la posición elegida.
      */
     String TOOBIGSHIP = "El barco no se puede situar en la posición indicada";
+    /**
+     * 
+     */
+    String NOTFREEPOSITION = "Ya se ha disparado en esa posición";
 }
