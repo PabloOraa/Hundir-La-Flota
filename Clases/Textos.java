@@ -110,7 +110,19 @@ public interface Textos
      */
     String TOOBIGSHIP = "El barco no se puede situar en la posición indicada";
     /**
-     * 
+     * No se puede disparar en la posición seleccionada
      */
     String NOTFREEPOSITION = "Ya se ha disparado en esa posición";
+    /**
+     * Estado Vivo del Barco
+     */
+    String ALIVE = "Vivo";
+    /**
+     * Estado Hundido del Barco
+     */
+    String DEAD = "Hundido";
+    /**
+     * El jugador ha muerto
+     */
+    String PLAYERDEAD = "Jugador derrotado";
 }

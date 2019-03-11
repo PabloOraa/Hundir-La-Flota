@@ -19,6 +19,14 @@ public class Barco
      * Cadena de texto que indica la figura del barco
      */
     private final String figure;
+    /**
+     * Cadena de texto que indica el estado del Barco, Vivo o Muerto
+     */
+    private String state;
+    /**
+     * Contador de vidas del Barco en función de la longitud
+     */
+    private int vidas;
 
     /**
      * Constructor del barco que crea automáticamente la figura del barco que se 
@@ -31,6 +39,8 @@ public class Barco
         this.name = name;
         this.length = length;
         figure = createFigure(name, length);
+        state = Textos.ALIVE;
+        vidas = length;
     }
 
     /**
@@ -75,6 +85,24 @@ public class Barco
     {
         return figure;
     }
+
+    /**
+     * Obtiene el estado actual del barco
+     * @return Cadena con el estado actual del barco
+     */
+    public String getState()
+    {
+        return state;
+    }
+
+    /**
+     * Obtiene las vidas del barco
+     * @return numero de vidas actuales barco
+     */
+    public int getVidas()
+    {
+        return vidas;
+    }
     
     /**
      * Obtienes el nombre del barco a partir de las letras de la figura
@@ -97,5 +125,25 @@ public class Barco
             default: //Se interpreta como Lancha al no haber otra opción disponible
                 return "Lancha";
         }
+    }
+    
+    /**
+     * Reduce la vida del barco en 1 cuando le golpean con un disparo.
+     */
+    public void reducirVida()
+    {
+        vidas--;
+        
+        if(vidas == 0)
+           barcoHundido();
+    }
+    
+    /**
+     * Cambia el estado Vivo por defecto del barco a Hundido, para indicar que se
+     * ha quedado sin vidas.
+     */
+    private void barcoHundido()
+    {
+        state = Textos.DEAD;
     }
 }

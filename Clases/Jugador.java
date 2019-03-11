@@ -1,5 +1,6 @@
 package Clases;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * @Version 1.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
-public class Jugador
+public class Jugador implements Serializable
 {
     private final String nickname;
     private Tablero tableroBarcos;
@@ -78,6 +79,9 @@ public class Jugador
     
     /**
      * Dispara al otro jugador en una posición determinada.
+     * <br />
+     * Una vez disparemos, el otro jugador apuntará en su tablero si es Agua o Tocado
+     * con X u O, al igual que nosotros lo haremos en el secundario.
      * @param j2 Jugador al que dispara
      * @param fila Fila entre 1 y 10 en las que se encuentra el disparo
      * @param columna Columna ente A y J en la que se encuentra el disparo
@@ -86,14 +90,20 @@ public class Jugador
      */
     public String Disparar(Jugador j2, int fila, char columna) throws ExcepcionesBarco
     {
-        return j2.comprobarDisparo(fila-1,columna);
+        String cadTexto = j2.comprobarDisparo(fila-1,columna);
+        if(cadTexto.equals(Textos.FAIL))
+            j2.apuntar(fila,columna, Textos.FAILLETTER);
+        else
+            j2.apuntar(fila,columna, Textos.RIGHTLETTER);
+        return cadTexto;
     }
     
     /**
      * Comprueba si el disparo ha dado en un barco o en el agua.
      * @param fila Fila entre 0 y 9 en las que se encuentra el disparo
      * @param columna Columna ente A y J en la que se encuentra el disparo
-     * @return Cadena de texto con el resultado: Agua, Tocado y Hundido
+     * @return Cadena de texto con el resultado: Agua, Tocado y Hundido. 
+     * Si el usuario se ha quedado sin barcos devolverá Jugador derrotado
      * @throws Clases.ExcepcionesBarco
      */
     private String comprobarDisparo(int fila, char columna) throws ExcepcionesBarco
@@ -106,13 +116,15 @@ public class Jugador
             {
                 res = Textos.RIGHTLETTER;
                 resultado = Textos.RIGHT;
+                if(!comprobarBarcos())
+                    resultado = Textos.PLAYERDEAD;
             }
             else
             {
                 res = Textos.FAILLETTER;
                 resultado = Textos.FAIL;
             }
-            referenciaTablero(fila, tableroBarcos.getCoord(Character.toUpperCase(columna)), res);
+            referenciaTablero(tableroResultados, fila, tableroBarcos.getCoord(Character.toUpperCase(columna)), res);
             return resultado;
         }
         else
@@ -126,10 +138,35 @@ public class Jugador
      * convertida desde la letra.
      * @param res Resultado en X u O de lo que ha ocurrido.
      */
-    private void referenciaTablero(int fila, int columna, char res)
+    private void referenciaTablero(Tablero tab, int fila, int columna, char res)
     {
-        tableroResultados.insertarResultado(fila, columna, res);
+        tab.insertarResultado(fila, columna, res);
     }
     
-    
+    /**
+     * Comprueba si el usuarios sigue pudiendo jugar o si le han eliminado
+     * @return True si está vivo y false si no
+     */
+    public boolean comprobarBarcos()
+    {
+        boolean vivo = false;
+        for (Barco listaBarco : listaBarcos)
+        {
+            if(listaBarco.getVidas() > 0)
+                vivo = true;
+        }
+        
+        return vivo;
+    }
+
+    /**
+     * Guarda en tablero de Barcos el resultado del disparo que nos han realizado.
+     * @param fila Numero entre 1 y 10 que representa la fila elegida por el usuario.
+     * @param columna letra entre A y J que representa la columna elegida por el usuario.
+     * @param res Resultado en X u O de lo que ha ocurrido.
+     */
+    private void apuntar(int fila, char columna, char res)
+    {
+        tableroBarcos.insertarResultado(fila-1 , tableroBarcos.getCoord(Character.toUpperCase(columna)),res);
+    }
 }
