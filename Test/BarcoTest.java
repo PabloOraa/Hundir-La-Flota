@@ -171,4 +171,56 @@ public class BarcoTest
         
         assertNotEquals(Textos.PORTAAVIONES, nombre);
     }
+    
+    @Test
+    public void testReducirVidaC()
+    {
+        Barco brc = new Barco(Textos.PORTAAVIONES,Textos.PORTAAVIONESFIGURE.length());
+        
+        for (int i = 0; i < brc.getLength(); i++)
+        {
+            brc.reducirVida();
+        }
+        
+        assertEquals(0, brc.getVidas());
+    }
+    
+    @Test
+    public void testReducirVidaI()
+    {
+        Barco brc = new Barco(Textos.PORTAAVIONES,Textos.PORTAAVIONESFIGURE.length());
+        
+        for (int i = 0; i < brc.getLength()-1; i++)
+        {
+            brc.reducirVida();
+        }
+        
+        assertNotEquals(0, brc.getVidas());
+    }
+    
+    @Test
+    public void testBarcoHundidoC()
+    {
+        Barco brc = new Barco(Textos.PORTAAVIONES,Textos.PORTAAVIONESFIGURE.length());
+        
+        for (int i = 0; i < brc.getLength(); i++)
+        {
+            brc.reducirVida();
+        }
+        
+        assertEquals(Textos.DEAD, brc.getState());
+    }
+    
+    @Test
+    public void testBarcoHundidoI()
+    {
+        Barco brc = new Barco(Textos.PORTAAVIONES,Textos.PORTAAVIONESFIGURE.length());
+        
+        for (int i = 0; i < brc.getLength()-1; i++)
+        {
+            brc.reducirVida();
+        }
+        
+        assertNotEquals(Textos.DEAD, brc.getState());
+    }
 }
