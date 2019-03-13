@@ -4,13 +4,14 @@ import com.csvreader.CsvReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
  * @Version 1.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
-public class Tablero
+public class Tablero implements Serializable
 {
     /**
      * Matriz tablero que guarda los datos del los barcos o de los tiros del

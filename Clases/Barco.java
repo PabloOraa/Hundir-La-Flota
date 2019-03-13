@@ -1,5 +1,6 @@
 package Clases;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Objects;
  * @Version 1.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
-public class Barco
+public class Barco implements Serializable
 {
     /**
      * Cadena de texto que indica el nombre del barco

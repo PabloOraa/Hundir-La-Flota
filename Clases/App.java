@@ -5,8 +5,13 @@
  */
 package Clases;
 
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,31 +23,91 @@ import java.util.logging.Logger;
 public class App
 {
     private static Scanner sc = new Scanner(System.in);
+    private Jugador j1;
+    private Jugador j2;
+    private String path;
+    
+    public App(Jugador j1)
+    {
+        this.j1 = j1;
+        j2 = new Jugador(Textos.NPC);
+        path = System.getProperty("user.home") + "/Desktop/"+j1.getNickname()+".save";
+    }
+    
     public static void main(String[] args)
     {
-        try {
+        try 
+        {
             System.out.println(Textos.ASKNICKNAME);
             String nickname = sc.nextLine();
-            Jugador j1 = new Jugador(nickname);
-            Jugador npc = new Jugador(Textos.NPC);
+            Jugador jtemp = new Jugador(nickname);
             
-            npc.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
-            imprimirTableros(j1);
-            save(j1);
+            App aplicacion = new App(jtemp);
+            
+            
+            if(aplicacion.buscarPartida())
+            {
+                aplicacion.cargarPartida();
+                System.out.println("Cargado, imprimiendo");
+                aplicacion.imprimirTableros(aplicacion.j1);
+                aplicacion.imprimirTableros(aplicacion.j2);
+            }
+            else
+            {   
+                aplicacion.j2.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
+                aplicacion.imprimirTableros(aplicacion.j1);
+                aplicacion.imprimirTableros(aplicacion.j2);
+                aplicacion.save(aplicacion.j1);
+                aplicacion.save(aplicacion.j2);
+            }
         } catch (ExcepcionesBarco ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
 
-    private static void imprimirTableros(Jugador j1) 
+    public void imprimirTableros(Jugador j1) 
     {
         j1.imprimirTableros();
     }
 
-    public static boolean save(Jugador j1)
+    public boolean save(Jugador j1)
     {
-            String path = System.getProperty("user.home");
-            File archivoGuardado = new File(path + "/Desktop/"+j1.getNickname()+".save");
+        try 
+        {
+            File archivoGuardado = new File(path);
+            
+            if(!archivoGuardado.exists())
+                archivoGuardado.createNewFile();
+                
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoGuardado,true));)
+            {
+                oos.writeObject(j1);
+                return true;
+            }
+        } 
+        catch (IOException ex) 
+        {
+            return false;
+        }
+    }
+    
+    public boolean buscarPartida()
+    {
+        File archivoGuardado = new File(path); 
+        
+        return archivoGuardado.exists();
+    }
+    
+    private void cargarPartida()
+    {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(path)));) 
+        {
+
+            this.j1 = (Jugador) ois.readObject();
+            j2 = (Jugador) ois.readObject();
+        } catch (EOFException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
+        }
     }
 }
