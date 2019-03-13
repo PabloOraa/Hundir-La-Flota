@@ -129,4 +129,16 @@ public interface Textos
      * Color azul
      */
     String BLUE = "\033[34m";
+    /**
+     * Color verde
+     */
+    String GREEN = "\033[32m";
+    /**
+     * Color rojo
+     */
+    String RED = "\033[31m";
+    /**
+     * Color negro
+     */
+    String BLACK = "\033[30m";
 }

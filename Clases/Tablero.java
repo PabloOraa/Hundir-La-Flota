@@ -47,14 +47,17 @@ public class Tablero
         System.out.println(Textos.LINE);
         for (char[] tablero1 : tablero)
         {
-            for (int i = 0; i < tablero1.length; i++)
+            for (int i = 0; i < tablero1.length; i++){
                 if(tablero1[i]=='A'){
-                    String color = Textos.BLUE+tablero1[i];
-                    System.out.print(Textos.VERTICALBAR + "" + color + "" + Textos.VERTICALBAR);
+                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                }else if(tablero1[i]=='X'){
+                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                }else if(tablero1[i]=='O'){
+                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
                 }else{
-                    System.out.print(Textos.VERTICALBAR + "" + tablero1[i] + "" + Textos.VERTICALBAR);
+                    System.out.print(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
                 }
-                
+            }
             System.out.println("\n"+Textos.LINE);
         }
     }
