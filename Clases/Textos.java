@@ -125,4 +125,8 @@ public interface Textos
      * El jugador ha muerto
      */
     String PLAYERDEAD = "Jugador derrotado";
+    /**
+     * Color azul
+     */
+    String BLUE = "\033[34m";
 }

@@ -48,7 +48,13 @@ public class Tablero
         for (char[] tablero1 : tablero)
         {
             for (int i = 0; i < tablero1.length; i++)
-                System.out.print(Textos.VERTICALBAR + "" + tablero1[i] + "" + Textos.VERTICALBAR);
+                if(tablero1[i]=='A'){
+                    String color = Textos.BLUE+tablero1[i];
+                    System.out.print(Textos.VERTICALBAR + "" + color + "" + Textos.VERTICALBAR);
+                }else{
+                    System.out.print(Textos.VERTICALBAR + "" + tablero1[i] + "" + Textos.VERTICALBAR);
+                }
+                
             System.out.println("\n"+Textos.LINE);
         }
     }
