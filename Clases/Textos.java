@@ -125,4 +125,20 @@ public interface Textos
      * El jugador ha muerto
      */
     String PLAYERDEAD = "Jugador derrotado";
+    /**
+     * String que pide el nombre al jugador
+     */
+    String ASKNICKNAME = "Indica el nombre de usuario";
+    /**
+     * Cadena con el nombre de la máquina
+     */
+    String NPC = "Npc";
+    /**
+     * Cadena con el menu de la aplicacion
+     */
+    String MENU = "Elige la opcion que desees"
+            + "\n1) Disparar"
+            + "\n2) Guardar"
+            + "\n3) Guardar y salir"
+            + "\n4) Salir";
 }

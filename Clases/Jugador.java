@@ -116,8 +116,12 @@ public class Jugador implements Serializable
             {
                 res = Textos.RIGHTLETTER;
                 resultado = Textos.RIGHT;
-                if(!comprobarBarcos())
-                    resultado = Textos.PLAYERDEAD;
+                char letraB = tableroBarcos.getPos(fila,tableroBarcos.getCoord(Character.toUpperCase(columna)));
+                int posBarco = listaBarcos.indexOf(new Barco(Barco.obtenerNombre(String.valueOf(letraB))));
+                Barco brc = listaBarcos.get(posBarco);
+                if(comprobarBarco(brc))
+                    if(!comprobarBarcos())
+                        resultado = Textos.PLAYERDEAD;
             }
             else
             {
@@ -147,7 +151,7 @@ public class Jugador implements Serializable
      * Comprueba si el usuarios sigue pudiendo jugar o si le han eliminado
      * @return True si está vivo y false si no
      */
-    public boolean comprobarBarcos()
+    private boolean comprobarBarcos()
     {
         boolean vivo = false;
         for (Barco listaBarco : listaBarcos)
@@ -168,5 +172,27 @@ public class Jugador implements Serializable
     private void apuntar(int fila, char columna, char res)
     {
         tableroBarcos.insertarResultado(fila-1 , tableroBarcos.getCoord(Character.toUpperCase(columna)),res);
+    }
+    
+    /**
+     * Comprueba que un barco no tenga vidas
+     * @param brc Barco a comprobar
+     * @return True si no tiene y false si tiene vidas
+     */
+    private boolean comprobarBarco(Barco brc)
+    {
+        brc.reducirVida();
+        return brc.getVidas() == 0;
+    }
+    
+    /**
+     * 
+     */
+    public void imprimirTableros()
+    {
+        System.out.println("Disparos");
+        tableroResultados.imprimirTablero();
+        System.out.println("Barcos");
+        tableroBarcos.imprimirTablero();
     }
 }

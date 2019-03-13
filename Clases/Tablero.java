@@ -49,8 +49,9 @@ public class Tablero
         {
             for (int i = 0; i < tablero1.length; i++)
                 System.out.print(Textos.VERTICALBAR + "" + tablero1[i] + "" + Textos.VERTICALBAR);
-            System.out.println("\n"+Textos.LINE);
+            System.out.print("\n");
         }
+        System.out.println(Textos.LINE);
     }
     
     /**
