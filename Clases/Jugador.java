@@ -92,9 +92,9 @@ public class Jugador implements Serializable
     {
         String cadTexto = j2.comprobarDisparo(fila-1,columna);
         if(cadTexto.equals(Textos.FAIL))
-            j2.apuntar(fila,columna, Textos.FAILLETTER);
+            referenciaTablero(tableroResultados, fila-1, tableroBarcos.getCoord(Character.toUpperCase(columna)), Textos.FAILLETTER);
         else
-            j2.apuntar(fila,columna, Textos.RIGHTLETTER);
+            referenciaTablero(tableroResultados, fila-1, tableroBarcos.getCoord(Character.toUpperCase(columna)), Textos.RIGHTLETTER);
         return cadTexto;
     }
     
@@ -120,15 +120,18 @@ public class Jugador implements Serializable
                 int posBarco = listaBarcos.indexOf(new Barco(Barco.obtenerNombre(String.valueOf(letraB))));
                 Barco brc = listaBarcos.get(posBarco);
                 if(comprobarBarco(brc))
+                {
+                    resultado = Textos.ENDOFSHIP;
                     if(!comprobarBarcos())
                         resultado = Textos.PLAYERDEAD;
+                }
             }
             else
             {
                 res = Textos.FAILLETTER;
                 resultado = Textos.FAIL;
             }
-            referenciaTablero(tableroResultados, fila, tableroBarcos.getCoord(Character.toUpperCase(columna)), res);
+            apuntar(fila, columna, res);
             return resultado;
         }
         else
@@ -165,13 +168,13 @@ public class Jugador implements Serializable
 
     /**
      * Guarda en tablero de Barcos el resultado del disparo que nos han realizado.
-     * @param fila Numero entre 1 y 10 que representa la fila elegida por el usuario.
+     * @param fila Numero entre 0 y 9 que representa la fila elegida por el usuario.
      * @param columna letra entre A y J que representa la columna elegida por el usuario.
      * @param res Resultado en X u O de lo que ha ocurrido.
      */
     private void apuntar(int fila, char columna, char res)
     {
-        tableroBarcos.insertarResultado(fila-1 , tableroBarcos.getCoord(Character.toUpperCase(columna)),res);
+        tableroBarcos.insertarResultado(fila, tableroBarcos.getCoord(Character.toUpperCase(columna)),res);
     }
     
     /**

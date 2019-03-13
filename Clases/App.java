@@ -17,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Pabli
+ * @Version 1.0
+ * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class App
 {
@@ -55,6 +55,7 @@ public class App
             else
             {   
                 aplicacion.j2.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
+                aplicacion.j1.Disparar(aplicacion.j2, 3, 'A');
                 aplicacion.imprimirTableros(aplicacion.j1);
                 aplicacion.imprimirTableros(aplicacion.j2);
                 aplicacion.save(aplicacion.j1);
