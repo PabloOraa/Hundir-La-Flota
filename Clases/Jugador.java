@@ -189,7 +189,8 @@ public class Jugador implements Serializable
     }
     
     /**
-     * 
+     * Imprime los dos tableros del jugador, primero el de los disparos que ha 
+     * realizado y luego el de los resultados.
      */
     public void imprimirTableros()
     {
