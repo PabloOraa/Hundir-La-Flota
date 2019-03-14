@@ -1,11 +1,14 @@
 package Clases;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /**
  * Clase Barcos que representa los barcos usados por los jugadores
  * @Version 1.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
-public class Barco
+public class Barco implements Serializable
 {
     /**
      * Cadena de texto que indica el nombre del barco
@@ -41,6 +44,18 @@ public class Barco
         figure = createFigure(name, length);
         state = Textos.ALIVE;
         vidas = length;
+    }
+    
+    /**
+     * Constructor del barco utilizado para obtener el barco del usuario en base
+     * al barco golpeado. 
+     * @param name Nombre del barco
+     */
+    public Barco(String name)
+    {
+        this.name = name;
+        length = 0;
+        figure = "";
     }
 
     /**
@@ -145,5 +160,25 @@ public class Barco
     private void barcoHundido()
     {
         state = Textos.DEAD;
+    }
+
+    /**
+     * Comprueba que dos barcos sean iguales en función del nombre del barco
+     * @param obj Objeto pasado por parametro
+     * @return True si es el mismo y False si no
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Barco other = (Barco) obj;
+        return Objects.equals(this.name.toUpperCase(), other.name.toUpperCase());
     }
 }
