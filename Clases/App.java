@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @Version 1.0
@@ -27,6 +25,11 @@ public class App
     private Jugador j2;
     private String path;
     
+    /**
+     * Constructor de la clase App que crea un jugador controlado por la maquina
+     * y la ruta a usar por el usuario en caso de querer guardar.
+     * @param j1 Jugador que usará el usuario.
+     */
     public App(Jugador j1)
     {
         this.j1 = j1;
@@ -56,21 +59,30 @@ public class App
             {   
                 aplicacion.j2.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
                 aplicacion.j1.Disparar(aplicacion.j2, 3, 'A');
+                aplicacion.j1.Disparar(aplicacion.j2, 10, 'I');
                 aplicacion.imprimirTableros(aplicacion.j1);
                 aplicacion.imprimirTableros(aplicacion.j2);
                 aplicacion.save();
             }
         } catch (ExcepcionesBarco ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
         }
 
     }
 
+    /**
+     * Imprime los dos tableros el Jugador.
+     * @param j1 Jugador a imprimir.
+     */
     public void imprimirTableros(Jugador j1) 
     {
         j1.imprimirTableros();
     }
 
+    /**
+     * Guarda el estado de los jugadores para recuperarlo en el futuro.
+     * @return True si se ha guardado y false si no.
+     */
     public boolean save()
     {
         try 
@@ -93,6 +105,10 @@ public class App
         }
     }
     
+    /**
+     * Busca si existe una partida guardada para el nickname indicado.
+     * @return True si existe y False si no.
+     */
     public boolean buscarPartida()
     {
         File archivoGuardado = new File(path); 
@@ -100,6 +116,9 @@ public class App
         return archivoGuardado.exists();
     }
     
+    /**
+     * Carga la partida que ha encontrado el programa para el nickname indicado.
+     */
     private void cargarPartida()
     {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(path)));) 
@@ -112,6 +131,3 @@ public class App
         }
     }
 }
-
-
-//if(tablero[i-1][j] != 'L' && tablero[i-1][j] != tablero[i-2][j])

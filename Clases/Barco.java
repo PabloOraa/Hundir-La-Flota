@@ -179,6 +179,6 @@ public class Barco implements Serializable
             return false;
         }
         final Barco other = (Barco) obj;
-        return Objects.equals(this.name, other.name);
+        return Objects.equals(this.name.toUpperCase(), other.name.toUpperCase());
     }
 }
