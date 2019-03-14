@@ -123,13 +123,25 @@ public class Tablero implements Serializable
      */
     public boolean comprobarVertical(int tamBarco, int fila, char columna)
     {
+        char Brc = ' ';
         if(!(fila >= 0 && fila+tamBarco < tablero.length))
             return false;
         
-        for (int i = fila-1, j = getCoord(Character.toUpperCase(columna)), k = 0; k < tamBarco+2; i++, k++)
+        for (int i = fila-2, j = getCoord(Character.toUpperCase(columna)), k = 0; k < tamBarco+4; i++, k++)
             if(i > 0 && i < 10)
-                if(tablero[i][j] != 'A')
-                    return false;
+                if(i == tamBarco -2 || i == tamBarco+1)
+                {    
+                    if(tablero[i][j] != Textos.EMPTY)
+                        Brc = tablero[i][j];
+                }
+                else if(i == tamBarco -1 || i == tamBarco+2)
+                {
+                    if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
+                        return false;
+                }
+                else 
+                    if(tablero[i][j] != Textos.EMPTY)
+                        return false;
         
         return true;
     }
@@ -143,14 +155,26 @@ public class Tablero implements Serializable
      * @return true si es posible y false si no lo es
      */
     public boolean comprobarHorizontal(int tamBarco, int fila, char columna)
-    {       
+    {      
+        char Brc = ' ';
         if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length))
             return false;
         
-        for (int i = fila, j = getCoord(Character.toUpperCase(columna))-1, k = 0; k < tamBarco+2; j++, k++)
+        for (int i = fila, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; j++, k++)
             if(j > 0 && j < 10)
-                if(tablero[i][j] != 'A')
-                    return false;
+                if(i == tamBarco -2 || i == tamBarco+1)
+                {    
+                    if(tablero[i][j] != Textos.EMPTY)
+                        Brc = tablero[i][j];
+                }
+                else if(i == tamBarco -1 || i == tamBarco+2)
+                {
+                    if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
+                        return false;
+                }
+                else 
+                    if(tablero[i][j] != Textos.EMPTY)
+                        return false;
         
         return true;
     }
@@ -167,6 +191,7 @@ public class Tablero implements Serializable
      */
     public boolean comprobarDiagonal(int tamBarco, int fila, char columna, char carDir)
     {
+        char Brc = ' ';
         if(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length)
             if(carDir == Textos.DIAGONAL)
                 if(!(fila >= 0  && fila+tamBarco < tablero.length))
@@ -179,16 +204,58 @@ public class Tablero implements Serializable
         
         if(carDir == Textos.DIAGONAL)
         {    
-            for (int i = fila-1, j = getCoord(Character.toUpperCase(columna))-1, k = 0; k < tamBarco+2; i++,j++, k++)
+            for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; i++,j++, k++)
                 if((i > 0 && i < 10) && (j > 0 && j < 10))
-                    if(tablero[i][j] != 'A')
-                        return false;
+                    if(i == tamBarco -2 || i == tamBarco+1)
+                    {    
+                        if(tablero[i][j] != Textos.EMPTY)
+                            Brc = tablero[i][j];
+                    }
+                    else if(i == tamBarco -1 || i == tamBarco+2)
+                    {
+                        if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
+                            return false;
+                    }
+                    else 
+                        if(tablero[i][j] != Textos.EMPTY)
+                            return false;
         }
         else
-            for (int i = fila-1, j = getCoord(Character.toUpperCase(columna))-1, k = 0; k < tamBarco+2; i++,j++, k++)
+            for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; i++,j++, k++)
                 if((i > 0 && i < 10) && (j > 0 && j < 10))
-                    if(tablero[i][j] != 'A')
-                        return false;            
+                    if(i == tamBarco -2 || i == tamBarco+1)
+                    {    
+                        if(tablero[i][j] != Textos.EMPTY)
+                            Brc = tablero[i][j];
+                    }
+                    else if(i == tamBarco -1 || i == tamBarco+2)
+                    {
+                        if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
+                            return false;
+                    }
+                    else 
+                        if(tablero[i][j] != Textos.EMPTY)
+                            return false;           
+        return true;
+    }
+    
+    /**
+     * Comprueba que la lancha que se quiere colocar en esa posición es posible,
+     * es decir, que encaja en tamaño en la posición elegida y no hay ningún valor
+     * en la misma casilla o contigua.
+     * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @param columna columna en la que se desea introducir la primera posición del barco
+     * @return true si es posible y false si no lo es
+     */
+    private boolean comprobarLancha(int fila, char columna) {
+        if(!comprobarVertical(1, fila, columna))
+            return false;
+        if(!comprobarHorizontal(1,fila,columna))
+            return false;
+        if(!comprobarDiagonal(1,fila,columna,Textos.DIAGONAL))
+            return false;
+        if(!comprobarDiagonal(1,fila,columna,Textos.INVERSEDIAGONAL))
+            return false;
         return true;
     }
     
@@ -235,25 +302,33 @@ public class Tablero implements Serializable
      */
     public void insertar(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
     {
-        fila = fila-1; //Ajusta la fila elegida a la matriz
-        if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
-            if(comprobarHorizontal(brc.getFigure().length(), fila, columna))
+        if(brc.getName().equals(Textos.LANCHA))
+            if(comprobarLancha(fila,columna))
                 insertarHorizontal(fila, Character.toUpperCase(columna), brc);
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
-        else if(Character.toUpperCase(dir) == Textos.VERTICAL)
-            if(comprobarVertical(brc.getFigure().length(), fila, columna))
-                insertarVertical(fila,Character.toUpperCase(columna),brc);
-            else
-                throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
-        else 
-            if(comprobarDiagonal(brc.getFigure().length(), fila, columna, Character.toUpperCase(dir)))
-                if(Character.toUpperCase(dir) == Textos.DIAGONAL)
-                    insertarDiagonal(fila,Character.toUpperCase(columna),brc);
+        else
+        {
+            fila = fila-1; //Ajusta la fila elegida a la matriz
+            if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
+                if(comprobarHorizontal(brc.getFigure().length(), fila, columna))
+                    insertarHorizontal(fila, Character.toUpperCase(columna), brc);
                 else
-                    insertarDiagonalInversa(fila,Character.toUpperCase(columna),brc);
-            else
-                throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
+                    throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
+            else if(Character.toUpperCase(dir) == Textos.VERTICAL)
+                if(comprobarVertical(brc.getFigure().length(), fila, columna))
+                    insertarVertical(fila,Character.toUpperCase(columna),brc);
+                else
+                    throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
+            else    
+                if(comprobarDiagonal(brc.getFigure().length(), fila, columna, Character.toUpperCase(dir)))
+                    if(Character.toUpperCase(dir) == Textos.DIAGONAL)
+                        insertarDiagonal(fila,Character.toUpperCase(columna),brc);
+                    else
+                        insertarDiagonalInversa(fila,Character.toUpperCase(columna),brc);
+                else
+                    throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
+        }
     }
 
     /**

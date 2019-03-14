@@ -58,8 +58,7 @@ public class App
                 aplicacion.j1.Disparar(aplicacion.j2, 3, 'A');
                 aplicacion.imprimirTableros(aplicacion.j1);
                 aplicacion.imprimirTableros(aplicacion.j2);
-                aplicacion.save(aplicacion.j1);
-                aplicacion.save(aplicacion.j2);
+                aplicacion.save();
             }
         } catch (ExcepcionesBarco ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,7 +71,7 @@ public class App
         j1.imprimirTableros();
     }
 
-    public boolean save(Jugador j1)
+    public boolean save()
     {
         try 
         {
@@ -81,9 +80,10 @@ public class App
             if(!archivoGuardado.exists())
                 archivoGuardado.createNewFile();
                 
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoGuardado,true));)
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoGuardado));)
             {
                 oos.writeObject(j1);
+                oos.writeObject(j2);
                 return true;
             }
         } 
@@ -112,3 +112,6 @@ public class App
         }
     }
 }
+
+
+//if(tablero[i-1][j] != 'L' && tablero[i-1][j] != tablero[i-2][j])
