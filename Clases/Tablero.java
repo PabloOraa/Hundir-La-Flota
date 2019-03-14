@@ -48,8 +48,17 @@ public class Tablero implements Serializable
         System.out.println(Textos.LINE);
         for (char[] tablero1 : tablero)
         {
-            for (int i = 0; i < tablero1.length; i++)
-                System.out.print(Textos.VERTICALBAR + "" + tablero1[i] + "" + Textos.VERTICALBAR);
+            for (int i = 0; i < tablero1.length; i++){
+                if(tablero1[i]=='A'){
+                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                }else if(tablero1[i]=='X'){
+                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                }else if(tablero1[i]=='O'){
+                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                }else{
+                    System.out.print(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
+                }
+            }
             System.out.print("\n");
         }
         System.out.println(Textos.LINE);
@@ -71,13 +80,13 @@ public class Tablero implements Serializable
     
     /**
      * Obtiene el caracter que haya en la posición seleccionada por el usuario
-     * @param fila numero de fila entre 1 y 10 en la que se busca el valor
+     * @param fila numero de fila entre 0 y 9 en la que se busca el valor
      * @param columna numero de la matriz quemarca la columna a buscar
      * @return char que puede ser 'A','P','B','S','L' en caso del tablero principal y 'X','A','O' en caso del tablero secundario
      */
     public char getPos(int fila, int columna)
     {
-        return tablero[fila-1][columna];
+        return tablero[fila][columna];
     }
     
     /**
@@ -116,16 +125,21 @@ public class Tablero implements Serializable
     /**
      * Comprueba que el barco que se quiere colocar en esa posición es posible,
      * es decir, que encaja en tamaño en la posición horizontal elegida.
-     * @param tamBarco tamaño del barco a introducir
+     * @param brc Barco a introducir
      * @param fila fila en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarVertical(int tamBarco, int fila, char columna)
+    public boolean comprobarVertical(Barco brc, int fila, char columna)
     {
+        int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!(fila >= 0 && fila+tamBarco < tablero.length))
-            return false;
+        if(!brc.getName().equals(Textos.LANCHA))
+            if(!(fila >= 0 && fila+tamBarco < tablero.length))
+                return false;
+        else
+            if(!(fila >= 0 && fila+tamBarco <= tablero.length)) 
+                return false;
         
         for (int i = fila-2, j = getCoord(Character.toUpperCase(columna)), k = 0; k < tamBarco+4; i++, k++)
             if(i > 0 && i < 10)
@@ -149,16 +163,21 @@ public class Tablero implements Serializable
     /**
      * Comprueba que el barco que se quiere colocar en esa posición es posible,
      * es decir, que encaja en tamaño en la posición vertical elegida.
-     * @param tamBarco tamaño del barco a introducir
+     * @param brc Barco a introducir
      * @param fila fila en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarHorizontal(int tamBarco, int fila, char columna)
+    public boolean comprobarHorizontal(Barco brc, int fila, char columna)
     {      
+        int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length))
-            return false;
+        if(!brc.getName().equals(Textos.LANCHA))
+            if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length))
+                return false;
+        else
+            if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco <= tablero.length)) 
+                return false;
         
         for (int i = fila, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; j++, k++)
             if(j > 0 && j < 10)
@@ -183,24 +202,36 @@ public class Tablero implements Serializable
      * Comprueba que el barco que se quiere colocar en esa posición es posible,
      * es decir, que encaja en tamaño en la posición diagonal elegida y no hay
      * ningún valor en la misma casilla o contigua.
-     * @param tamBarco tamaño del barco a introducir
+     * @param brc Barco a introducir
      * @param fila fila en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la primera posición del barco
      * @param carDir caracter que marca si es Derecha o Izquiera para indicar el sentido de la diagonal
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarDiagonal(int tamBarco, int fila, char columna, char carDir)
+    public boolean comprobarDiagonal(Barco brc, int fila, char columna, char carDir)
     {
+        int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length)
-            if(carDir == Textos.DIAGONAL)
-                if(!(fila >= 0  && fila+tamBarco < tablero.length))
-                    return false;
+        if(!brc.getName().equals(Textos.LANCHA))
+            if(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length)
+                if(carDir == Textos.DIAGONAL)
+                    if(!(fila >= 0  && fila+tamBarco < tablero.length))
+                        return false;
+                else
+                    if(!(fila < tablero.length  && fila-tamBarco >= 0))
+                        return false;
             else
-                if(!(fila < tablero.length  && fila-tamBarco >= 0))
-                    return false;
+                return false;
         else
-            return false;
+            if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco <= tablero.length)) 
+                if(carDir == Textos.DIAGONAL)
+                    if(!(fila >= 0  && fila+tamBarco <= tablero.length))
+                        return false;
+                else
+                    if(!(fila < tablero.length  && fila-tamBarco >= 0))
+                        return false;
+            else
+                return false;    
         
         if(carDir == Textos.DIAGONAL)
         {    
@@ -247,16 +278,14 @@ public class Tablero implements Serializable
      * @param columna columna en la que se desea introducir la primera posición del barco
      * @return true si es posible y false si no lo es
      */
-    private boolean comprobarLancha(int fila, char columna) {
-        if(!comprobarVertical(1, fila, columna))
+    private boolean comprobarLancha(Barco brc, int fila, char columna) {
+        if(!comprobarVertical(brc, fila, columna))
             return false;
-        if(!comprobarHorizontal(1,fila,columna))
+        if(!comprobarHorizontal(brc,fila,columna))
             return false;
-        if(!comprobarDiagonal(1,fila,columna,Textos.DIAGONAL))
+        if(!comprobarDiagonal(brc,fila,columna,Textos.DIAGONAL))
             return false;
-        if(!comprobarDiagonal(1,fila,columna,Textos.INVERSEDIAGONAL))
-            return false;
-        return true;
+        return comprobarDiagonal(brc,fila,columna,Textos.INVERSEDIAGONAL);
     }
     
     /**
@@ -302,26 +331,26 @@ public class Tablero implements Serializable
      */
     public void insertar(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
     {
+        fila = fila-1; //Ajusta la fila elegida a la matriz
         if(brc.getName().equals(Textos.LANCHA))
-            if(comprobarLancha(fila,columna))
+            if(comprobarLancha(brc,fila,columna))
                 insertarHorizontal(fila, Character.toUpperCase(columna), brc);
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
         else
         {
-            fila = fila-1; //Ajusta la fila elegida a la matriz
             if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
-                if(comprobarHorizontal(brc.getFigure().length(), fila, columna))
+                if(comprobarHorizontal(brc, fila, columna))
                     insertarHorizontal(fila, Character.toUpperCase(columna), brc);
                 else
                     throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
             else if(Character.toUpperCase(dir) == Textos.VERTICAL)
-                if(comprobarVertical(brc.getFigure().length(), fila, columna))
+                if(comprobarVertical(brc, fila, columna))
                     insertarVertical(fila,Character.toUpperCase(columna),brc);
                 else
                     throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
             else    
-                if(comprobarDiagonal(brc.getFigure().length(), fila, columna, Character.toUpperCase(dir)))
+                if(comprobarDiagonal(brc, fila, columna, Character.toUpperCase(dir)))
                     if(Character.toUpperCase(dir) == Textos.DIAGONAL)
                         insertarDiagonal(fila,Character.toUpperCase(columna),brc);
                     else
