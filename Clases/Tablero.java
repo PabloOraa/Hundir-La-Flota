@@ -49,14 +49,20 @@ public class Tablero implements Serializable
         for (char[] tablero1 : tablero)
         {
             for (int i = 0; i < tablero1.length; i++){
-                if(tablero1[i]=='A'){
-                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
-                }else if(tablero1[i]=='X'){
-                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
-                }else if(tablero1[i]=='O'){
-                    System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
-                }else{
-                    System.out.print(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
+                switch (tablero1[i])
+                {
+                    case 'A':
+                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        break;
+                    case 'X':
+                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        break;
+                    case 'O':
+                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        break;
+                    default:
+                        System.out.print(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
+                        break;
                 }
             }
             System.out.print("\n");
@@ -327,34 +333,50 @@ public class Tablero implements Serializable
      * @param fila Numero que indica la fila de la primera posición del barco
      * @param columna Caracter que indica la primera posició del barco
      * @param brc Barco a introducir por el usuario
+     * @return True si se ha insertado
      * @throws ExcepcionesBarco 
      */
-    public void insertar(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
+    public boolean insertar(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
     {
         fila = fila-1; //Ajusta la fila elegida a la matriz
         if(brc.getName().equals(Textos.LANCHA))
             if(comprobarLancha(brc,fila,columna))
+            {
                 insertarHorizontal(fila, Character.toUpperCase(columna), brc);
+                return true;
+            }
             else
                 throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
         else
         {
             if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
                 if(comprobarHorizontal(brc, fila, columna))
+                {
                     insertarHorizontal(fila, Character.toUpperCase(columna), brc);
+                    return true;
+                }
                 else
                     throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
             else if(Character.toUpperCase(dir) == Textos.VERTICAL)
                 if(comprobarVertical(brc, fila, columna))
+                {
                     insertarVertical(fila,Character.toUpperCase(columna),brc);
+                    return true;
+                }
                 else
                     throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
             else    
                 if(comprobarDiagonal(brc, fila, columna, Character.toUpperCase(dir)))
                     if(Character.toUpperCase(dir) == Textos.DIAGONAL)
+                    {
                         insertarDiagonal(fila,Character.toUpperCase(columna),brc);
+                        return true;
+                    }
                     else
+                    {
                         insertarDiagonalInversa(fila,Character.toUpperCase(columna),brc);
+                        return true;
+                    }
                 else
                     throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
         }
