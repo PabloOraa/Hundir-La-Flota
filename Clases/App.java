@@ -287,8 +287,8 @@ public class App
      */
     private boolean comprobarColumna(char columna)
     {
-        return j1.getTableroBarcos().getCoord(columna) < 10 
-                && j1.getTableroBarcos().getCoord(columna) >-1;
+        return j1.getTableroBarcos().getCoord(Character.toUpperCase(columna)) < 10 
+                && j1.getTableroBarcos().getCoord(Character.toUpperCase(columna)) >-1;
     }
 
     /**
@@ -355,7 +355,7 @@ public class App
     {
         try
         {
-            j1.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
+            j1.getTableroBarcos().insertar(new File("src/Datos/posiciones_angel.csv"));
         } catch (ExcepcionesBarco ex)
         {
             System.err.println(ex.getMessage());

@@ -146,13 +146,13 @@ public class Tablero implements Serializable
             return false;
         
         for (int i = fila-2, j = getCoord(Character.toUpperCase(columna)), k = 0; k < tamBarco+4; i++, k++)
-            if(i > 0 && i < 10)
-                if(i == tamBarco -2 || i == tamBarco+1)
+            if(i >= 0 && i < 10)
+                if((i == fila-2 || i == fila + tamBarco))
                 {    
                     if(tablero[i][j] != Textos.EMPTY)
                         Brc = tablero[i][j];
                 }
-                else if(i == tamBarco -1 || i == tamBarco+2)
+                else if((i == fila -1 || i == fila + tamBarco+1))
                 {
                     if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
                         return false;
@@ -176,17 +176,17 @@ public class Tablero implements Serializable
     {      
         int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length)) //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
+        if(!(getCoord(Character.toUpperCase(columna)) >= 0 && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length)) //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
             return false;
         
         for (int i = fila, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; j++, k++)
-            if(j > 0 && j < 10)
-                if(i == tamBarco -2 || i == tamBarco+1)
+            if(j >= 0 && j < 10)
+                if(j == Character.toUpperCase(columna) -2 || j == Character.toUpperCase(columna) + tamBarco)
                 {    
                     if(tablero[i][j] != Textos.EMPTY)
                         Brc = tablero[i][j];
                 }
-                else if(i == tamBarco -1 || i == tamBarco+2)
+                else if(j == Character.toUpperCase(columna) -1 || j == Character.toUpperCase(columna)+tamBarco+1)
                 {
                     if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
                         return false;
@@ -215,7 +215,7 @@ public class Tablero implements Serializable
         if(fila >= 0  && fila+tamBarco-1 < tablero.length)
             if(carDir == Textos.DIAGONAL)
             {
-                if(!(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length))
+                if(!(getCoord(Character.toUpperCase(columna)) >= 0  && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length))
                     return false;
             }
             else
@@ -229,13 +229,13 @@ public class Tablero implements Serializable
         if(carDir == Textos.DIAGONAL)
         {    
             for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; i++,j++, k++)
-                if((i > 0 && i < 10) && (j > 0 && j < 10))
-                    if(i == tamBarco -2 || i == tamBarco+1)
+                if((i >= 0 && i < 10) && (j >= 0 && j < 10))
+                    if(i == fila -2 || i == fila+tamBarco)
                     {    
                         if(tablero[i][j] != Textos.EMPTY)
                             Brc = tablero[i][j];
                     }
-                    else if(i == tamBarco -1 || i == tamBarco+2)
+                    else if(i == fila -1 || i == fila+tamBarco+1)
                     {
                         if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
                             return false;
@@ -247,12 +247,12 @@ public class Tablero implements Serializable
         else
             for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; i++,j++, k++)
                 if((i > 0 && i < 10) && (j > 0 && j < 10))
-                    if(i == tamBarco -2 || i == tamBarco+1)
+                    if((i == fila -2 || i == fila + tamBarco))
                     {    
                         if(tablero[i][j] != Textos.EMPTY)
                             Brc = tablero[i][j];
                     }
-                    else if(i == tamBarco -1 || i == tamBarco+2)
+                    else if(i == fila - 1 || i == fila + tamBarco + 1)
                     {
                         if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
                             return false;
