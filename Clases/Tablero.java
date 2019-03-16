@@ -75,7 +75,7 @@ public class Tablero implements Serializable
      * <br/><br/>
      * Metodo utilizado de cara al usuario de la clase en función de los datos 
      * introducidos por el jugador
-     * @param fila numero de fila entre 1 y 10 en la que se busca el valor
+     * @param fila numero de fila entre 0 y 9 en la que se busca el valor
      * @param columna caracter de la matriz que marca la columna a buscar seleccionada por el usuario
      * @return char que puede ser 'A','P','B','S','L' en caso del tablero principal y 'X','A','O' en caso del tablero secundario
      */

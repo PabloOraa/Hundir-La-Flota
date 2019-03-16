@@ -93,7 +93,7 @@ public class Jugador implements Serializable
     public String Disparar(Jugador j2, int fila, char columna) throws ExcepcionesBarco
     {
         String cadTexto;
-        if(tableroResultados.getPos(fila, columna) == 'A') //No se ha disparado en ese punto
+        if(tableroResultados.getPos(fila-1, columna) == 'A') //No se ha disparado en ese punto
             cadTexto = j2.comprobarDisparo(fila-1,columna);
         else
             throw new ExcepcionesBarco(Textos.NOTFREEPOSITION);
