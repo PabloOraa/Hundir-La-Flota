@@ -59,8 +59,6 @@ public interface Textos
      * Cadena que representa la figura de la Lancha.
      */
     char LANCHAFIGURE = 'L';
-    
-    String ROW = "Elige la fila";
     /**
      * Caracter A que marca que no hay nada en esa casilla.
      */

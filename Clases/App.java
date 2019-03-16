@@ -100,6 +100,7 @@ public class App
         while(!salir)
         {    
             boolean cambiarJugador = false;
+            System.out.println("Turno de " + turno.getNickname());
             if(turno.equals(j1))
             {    
                 System.out.println(Textos.MENU);

@@ -123,8 +123,10 @@ public class Tablero implements Serializable
                 return 7;
             case 'I':
                 return 8;
-            default: /*Se considera el Default la letra J*/
+            case 'J':
                 return 9;
+            default:
+                return -1;
         }
     }
     
@@ -132,7 +134,7 @@ public class Tablero implements Serializable
      * Comprueba que el barco que se quiere colocar en esa posición es posible,
      * es decir, que encaja en tamaño en la posición horizontal elegida.
      * @param brc Barco a introducir
-     * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @param fila fila entre 0 y 9 en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
@@ -140,12 +142,8 @@ public class Tablero implements Serializable
     {
         int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!brc.getName().equals(Textos.LANCHA))
-            if(!(fila >= 0 && fila+tamBarco < tablero.length))
-                return false;
-        else
-            if(!(fila >= 0 && fila+tamBarco <= tablero.length)) 
-                return false;
+        if(!(fila >= 0 && fila+tamBarco-1 < tablero.length)) //fila + tambBarco-1 porque se cuenta la fila pasada.
+            return false;
         
         for (int i = fila-2, j = getCoord(Character.toUpperCase(columna)), k = 0; k < tamBarco+4; i++, k++)
             if(i > 0 && i < 10)
@@ -170,7 +168,7 @@ public class Tablero implements Serializable
      * Comprueba que el barco que se quiere colocar en esa posición es posible,
      * es decir, que encaja en tamaño en la posición vertical elegida.
      * @param brc Barco a introducir
-     * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @param fila fila entre 0 y 9 en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
@@ -178,12 +176,8 @@ public class Tablero implements Serializable
     {      
         int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!brc.getName().equals(Textos.LANCHA))
-            if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length))
-                return false;
-        else
-            if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco <= tablero.length)) 
-                return false;
+        if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length)) //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
+            return false;
         
         for (int i = fila, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; j++, k++)
             if(j > 0 && j < 10)
@@ -209,7 +203,7 @@ public class Tablero implements Serializable
      * es decir, que encaja en tamaño en la posición diagonal elegida y no hay
      * ningún valor en la misma casilla o contigua.
      * @param brc Barco a introducir
-     * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @param fila fila entre 0 y 9 en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la primera posición del barco
      * @param carDir caracter que marca si es Derecha o Izquiera para indicar el sentido de la diagonal
      * @return true si es posible y false si no lo es
@@ -218,26 +212,19 @@ public class Tablero implements Serializable
     {
         int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!brc.getName().equals(Textos.LANCHA))
-            if(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco < tablero.length)
-                if(carDir == Textos.DIAGONAL)
-                    if(!(fila >= 0  && fila+tamBarco < tablero.length))
-                        return false;
-                else
-                    if(!(fila < tablero.length  && fila-tamBarco >= 0))
-                        return false;
+        if(fila >= 0  && fila+tamBarco-1 < tablero.length)
+            if(carDir == Textos.DIAGONAL)
+            {
+                if(!(getCoord(Character.toUpperCase(columna)) > 0  && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length))
+                    return false;
+            }
             else
-                return false;
+            {
+                if(!(getCoord(Character.toUpperCase(columna)) < tablero.length  && getCoord(Character.toUpperCase(columna))-tamBarco+1 >= 0))
+                    return false;
+            }
         else
-            if(!(getCoord(Character.toUpperCase(columna)) > 0 && getCoord(Character.toUpperCase(columna))+tamBarco <= tablero.length)) 
-                if(carDir == Textos.DIAGONAL)
-                    if(!(fila >= 0  && fila+tamBarco <= tablero.length))
-                        return false;
-                else
-                    if(!(fila < tablero.length  && fila-tamBarco >= 0))
-                        return false;
-            else
-                return false;    
+            return false;    
         
         if(carDir == Textos.DIAGONAL)
         {    
@@ -280,7 +267,7 @@ public class Tablero implements Serializable
      * Comprueba que la lancha que se quiere colocar en esa posición es posible,
      * es decir, que encaja en tamaño en la posición elegida y no hay ningún valor
      * en la misma casilla o contigua.
-     * @param fila fila en la que se quiere colocar la primera posición del barco
+     * @param fila fila entre 0 y 9 en la que se quiere colocar la primera posición del barco
      * @param columna columna en la que se desea introducir la primera posición del barco
      * @return true si es posible y false si no lo es
      */
@@ -330,7 +317,7 @@ public class Tablero implements Serializable
      * Inserta el barco en fila y columna indicada por el usuario para un barco 
      * en concreto en la dirección en cuestión
      * @param dir Char que indica la dirección que quiere la dirección en la que se introduce el barco
-     * @param fila Numero que indica la fila de la primera posición del barco
+     * @param fila Numero entre 1 y 10 que indica la fila de la primera posición del barco
      * @param columna Caracter que indica la primera posició del barco
      * @param brc Barco a introducir por el usuario
      * @return True si se ha insertado
