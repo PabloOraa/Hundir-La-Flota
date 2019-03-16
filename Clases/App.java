@@ -12,6 +12,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -56,7 +58,9 @@ public class App
             
             if(aplicacion.buscarPartida())
             {
-                System.out.println(Textos.ASKLOAD);
+                SimpleDateFormat sdf = new SimpleDateFormat(Textos.FORMAT);
+                System.out.println(Textos.SAVEFILEFOUND 
+                        + sdf.format(new Date(new File(aplicacion.path).lastModified())) + Textos.ASKLOAD);
                 String respuesta = sc.nextLine(); 
                 if(respuesta.toUpperCase().equals(Textos.AFFIRMATIVE))
                 {        

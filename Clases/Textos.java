@@ -170,12 +170,19 @@ public interface Textos
      */
     String NOTVALIDFIELDS = "La fila o la columna no son validas.";
     /**
-     * Cadena de texto para saber si el usuario quiere cargar la partida.
+     * Cadena de texto para indicar que se ha encontrado una partida guardada.
      */
-    String ASKLOAD = "Se ha encontrado una partida guardada.\nDesea cargarla?";
+    String SAVEFILEFOUND = "Se ha encontrado una partida guardada ";
+    /**
+     * Cadena para pregutnar si se quiere cargar la partida.
+     */
+    String ASKLOAD = "\nDeseas cargarla?";
     /**
      * Respuesta afirmativa para cargar la partida del usuario.
      */
     String AFFIRMATIVE = "SI";
-    
+    /**
+     * Formato de la fecha al preguntar al usuario si quiere cargarla.
+     */
+    String FORMAT = "'el' dd/MM/yyyy 'a las' kk:mm:ss";
 }
