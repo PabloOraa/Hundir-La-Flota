@@ -82,6 +82,8 @@ public class Jugador implements Serializable
      * <br />
      * Una vez disparemos, el otro jugador apuntará en su tablero si es Agua o Tocado
      * con X u O, al igual que nosotros lo haremos en el secundario.
+     * <br/>
+     * Comprueba antes de nada si podemos disparar en esa posición
      * @param j2 Jugador al que dispara
      * @param fila Fila entre 1 y 10 en las que se encuentra el disparo
      * @param columna Columna ente A y J en la que se encuentra el disparo
@@ -90,7 +92,12 @@ public class Jugador implements Serializable
      */
     public String Disparar(Jugador j2, int fila, char columna) throws ExcepcionesBarco
     {
-        String cadTexto = j2.comprobarDisparo(fila-1,columna);
+        String cadTexto;
+        if(tableroResultados.getPos(fila-1, columna) == 'A') //No se ha disparado en ese punto
+            cadTexto = j2.comprobarDisparo(fila-1,columna);
+        else
+            throw new ExcepcionesBarco(Textos.NOTFREEPOSITION);
+        
         if(cadTexto.equals(Textos.FAIL))
             referenciaTablero(tableroResultados, fila-1, tableroBarcos.getCoord(Character.toUpperCase(columna)), Textos.FAILLETTER);
         else
@@ -110,32 +117,27 @@ public class Jugador implements Serializable
     {
         char res;
         String resultado;
-        if(tableroResultados.getPos(fila, columna) == 'A') //No se ha disparado en ese punto
+        if(Textos.EMPTY != tableroBarcos.getPos(fila,tableroBarcos.getCoord(Character.toUpperCase(columna))))
         {
-            if(Textos.EMPTY != tableroBarcos.getPos(fila,tableroBarcos.getCoord(Character.toUpperCase(columna))))
+            res = Textos.RIGHTLETTER;
+            resultado = Textos.RIGHT;
+            char letraB = tableroBarcos.getPos(fila,tableroBarcos.getCoord(Character.toUpperCase(columna)));
+            int posBarco = listaBarcos.indexOf(new Barco(Barco.obtenerNombre(String.valueOf(letraB))));
+            Barco brc = listaBarcos.get(posBarco);
+            if(comprobarBarco(brc))
             {
-                res = Textos.RIGHTLETTER;
-                resultado = Textos.RIGHT;
-                char letraB = tableroBarcos.getPos(fila,tableroBarcos.getCoord(Character.toUpperCase(columna)));
-                int posBarco = listaBarcos.indexOf(new Barco(Barco.obtenerNombre(String.valueOf(letraB))));
-                Barco brc = listaBarcos.get(posBarco);
-                if(comprobarBarco(brc))
-                {
-                    resultado = Textos.ENDOFSHIP;
-                    if(!comprobarBarcos())
-                        resultado = Textos.PLAYERDEAD;
-                }
+                resultado = Textos.ENDOFSHIP;
+                if(!comprobarBarcos())
+                    resultado = Textos.PLAYERDEAD;
             }
-            else
-            {
-                res = Textos.FAILLETTER;
-                resultado = Textos.FAIL;
-            }
-            apuntar(fila, columna, res);
-            return resultado;
         }
         else
-            throw new ExcepcionesBarco(Textos.NOTFREEPOSITION);
+        {
+                res = Textos.FAILLETTER;
+                resultado = Textos.FAIL;
+        }
+        apuntar(fila, columna, res);
+        return resultado;
     }
 
     /**

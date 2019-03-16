@@ -137,8 +137,11 @@ public class Barco implements Serializable
             case 'S':
             case 's':
                 return "Submarino";
-            default: //Se interpreta como Lancha al no haber otra opción disponible
+            case 'L':
+            case 'l':
                 return "Lancha";
+            default:
+                return "";
         }
     }
     

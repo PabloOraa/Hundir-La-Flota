@@ -1,5 +1,5 @@
 package TestBarcos;
-
+        
 import org.junit.Test;
 import static org.junit.Assert.*;
 import Clases.Barco;
@@ -12,6 +12,9 @@ import Clases.Textos;
  */
 public class BarcoTest
 {
+    /**
+     * Crea un portaaviones
+     */
     @Test
     public void testCreatePortaavionesC()
     {
@@ -32,6 +35,9 @@ public class BarcoTest
         assertNotEquals("ppppp",figura);
     }
     
+    /**
+     * Crea un buque
+     */
     @Test
     public void testCreateBuqueC()
     {
@@ -52,6 +58,9 @@ public class BarcoTest
         assertNotEquals("bbb",figura);
     }
     
+    /**
+     * Crea un submarino
+     */
     @Test
     public void testCreateSubmarinoC()
     {
@@ -72,6 +81,9 @@ public class BarcoTest
         assertNotEquals("ss",figura);
     }
     
+    /**
+     * Crea una lancha
+     */
     @Test
     public void testCreateLanchaC()
     {
@@ -79,7 +91,7 @@ public class BarcoTest
         
         String figura = lancha.getFigure();
         
-        assertEquals(Textos.LANCHAFIGURE,figura);
+        assertEquals(String.valueOf(Textos.LANCHAFIGURE),figura);
     }
     
     @Test
@@ -92,6 +104,9 @@ public class BarcoTest
         assertNotEquals("l",figura);
     }
     
+    /**
+     * A partir de la figura se obtiene el nombre del barco portaaviones
+     */
     @Test
     public void testObtenerNombrePortaavionesC()
     {
@@ -112,6 +127,9 @@ public class BarcoTest
         assertNotEquals(Textos.LANCHA, nombre);
     }
     
+    /**
+     * A partir de la figura se obtiene el nombre del barco buque
+     */
     @Test
     public void testObtenerNombreBuqueC()
     {
@@ -132,6 +150,9 @@ public class BarcoTest
         assertNotEquals(Textos.PORTAAVIONES, nombre);
     }
     
+    /**
+     * A partir de la figura se obtiene el nombre del barco Submarino
+     */
     @Test
     public void testObtenerNombreSubmarinoC()
     {
@@ -152,12 +173,15 @@ public class BarcoTest
         assertNotEquals(Textos.LANCHA, nombre);
     }
     
+    /**
+     * A partir de la figura se obtiene el nombre del barco lancha
+     */
     @Test
     public void testObtenerNombreLanchaC()
     {
-        String figura = Textos.LANCHAFIGURE;
+        char figura = Textos.LANCHAFIGURE;
 
-        String nombre = Barco.obtenerNombre(figura);
+        String nombre = Barco.obtenerNombre(String.valueOf(figura));
         
         assertEquals(Textos.LANCHA, nombre);
     }
@@ -165,13 +189,16 @@ public class BarcoTest
     @Test
     public void testObtenerNombreLanchaI()
     {
-        String figura = Textos.LANCHAFIGURE;
+        char figura = Textos.LANCHAFIGURE;
 
-        String nombre = Barco.obtenerNombre(figura);
+        String nombre = Barco.obtenerNombre(String.valueOf(figura));
         
         assertNotEquals(Textos.PORTAAVIONES, nombre);
     }
     
+    /**
+     * Reduce la vida del barco a 0
+     */
     @Test
     public void testReducirVidaC()
     {
@@ -198,6 +225,9 @@ public class BarcoTest
         assertNotEquals(0, brc.getVidas());
     }
     
+    /**
+     * Comprueba que marque el barco como hundido al quedarse sin vidas
+     */
     @Test
     public void testBarcoHundidoC()
     {
