@@ -413,7 +413,7 @@ public class Tablero implements Serializable
      */
     private void insertarDiagonalInversa(int fila, char columna, Barco brc)
     {
-        for (int i = fila, j = getCoord(columna), k = 0; k < brc.getFigure().length(); i--,j--, k++)
+        for (int i = fila, j = getCoord(columna), k = 0; k < brc.getFigure().length(); i++,j--, k++)
             tablero[i][j] = brc.getFigure().charAt(0);
     }
     
