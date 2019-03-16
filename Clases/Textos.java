@@ -164,6 +164,11 @@ public interface Textos
      */
     String ASKCOLUMN = "Introduce la columna entre A y J en la que vas a disparar.";
     /**
+     * Pide la dirección en la que se introduce el barco.
+     */
+    String ASKDIR = "Introduce la dirección en la que se introduce el barco.\n"
+            + "Nota: D para Diagonal, I para Diagonal Inversa, H para Horizontal y V para vertical";
+    /**
      * El usuario ha introducido mal la fila o la columna.
      */
     String NOTVALIDFIELDS = "La fila o la columna no son validas.";

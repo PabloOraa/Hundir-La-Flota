@@ -265,7 +265,7 @@ public class App
         if(comprobarFila(fila) && comprobarColumna(columna))
             return turno.Disparar(anterior, fila, columna);
         else
-            System.out.println(Textos.NOTVALIDFIELDS);
+            System.err.println(Textos.NOTVALIDFIELDS);
         
         return "";
     }
@@ -353,12 +353,34 @@ public class App
      */
     private void insertarBarcos(Jugador j1)
     {
-        try
+        char dir, columna;
+        int fila;
+        for(int i = 0; i < j1.getListaBarcos().size();)
         {
-            j1.getTableroBarcos().insertar(new File("src/Datos/posiciones_angel.csv"));
-        } catch (ExcepcionesBarco ex)
-        {
-            System.err.println(ex.getMessage());
+            try
+            {
+                System.out.println("Se va a introducir el: " + j1.getListaBarcos().get(i).getName());
+                System.out.println(Textos.ASKDIR);
+                dir = sc.nextLine().charAt(0);
+                System.out.println(Textos.ASKROW);
+                fila = Integer.parseInt(sc.nextLine());
+                System.out.println(Textos.ASKCOLUMN);
+                columna = sc.nextLine().charAt(0);
+                
+                if(comprobarFila(fila) && comprobarColumna(columna))
+                {
+                    if(j1.getTableroBarcos().insertar(dir, fila, columna, j1.getListaBarcos().get(i)))
+                    {
+                        j1.getTableroBarcos().imprimirTablero();
+                        i++;
+                    }
+                }
+                else
+                    System.err.println(Textos.NOTVALIDFIELDS); 
+            } catch (ExcepcionesBarco | NumberFormatException ex)
+            {
+                System.err.println(ex.getMessage());
+            }
         }
     }
 }

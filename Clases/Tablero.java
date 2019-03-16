@@ -181,12 +181,12 @@ public class Tablero implements Serializable
         
         for (int i = fila, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; j++, k++)
             if(j >= 0 && j < 10)
-                if(j == Character.toUpperCase(columna) -2 || j == Character.toUpperCase(columna) + tamBarco)
+                if(j == getCoord(Character.toUpperCase(columna)) -2 || j == getCoord(Character.toUpperCase(columna)) + tamBarco)
                 {    
                     if(tablero[i][j] != Textos.EMPTY)
                         Brc = tablero[i][j];
                 }
-                else if(j == Character.toUpperCase(columna) -1 || j == Character.toUpperCase(columna)+tamBarco+1)
+                else if(j == getCoord(Character.toUpperCase(columna)) -1 || j == getCoord(Character.toUpperCase(columna))+tamBarco+1)
                 {
                     if((Brc != ' ' && tablero[i][j] == Brc) || tablero[i][j] == Textos.LANCHAFIGURE)
                         return false;
@@ -245,7 +245,7 @@ public class Tablero implements Serializable
                             return false;
         }
         else
-            for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; i++,j++, k++)
+            for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; i++,j--, k++)
                 if((i > 0 && i < 10) && (j > 0 && j < 10))
                     if((i == fila -2 || i == fila + tamBarco))
                     {    
@@ -326,7 +326,7 @@ public class Tablero implements Serializable
     public boolean insertar(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
     {
         fila = fila-1; //Ajusta la fila elegida a la matriz
-        if(brc.getName().equals(Textos.LANCHA))
+        if(brc.getName().toUpperCase().equals(Textos.LANCHA.toUpperCase()))
             if(comprobarLancha(brc,fila,columna))
             {
                 insertarHorizontal(fila, Character.toUpperCase(columna), brc);
