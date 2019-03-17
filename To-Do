@@ -1,3 +1,2 @@
-1. Permitir que sea el usuario el que decida donde introducir los barcos colocando las coordenadas de forma manual, empezando por el portaaviones y continuando por buque, submarino y lancha.
-1.1 Dejar que el usuario decida el orden de inserción de los barcos.
+1. Dejar que el usuario decida el orden de inserción de los barcos.
 2. Comprobar que el archivo csv incluye todos los barcos, y si no introducir el resto a mano.
