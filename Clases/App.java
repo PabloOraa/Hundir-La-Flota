@@ -192,10 +192,7 @@ public class App
         try 
         {
             File archivoGuardado = new File(path);
-            
-            if(!archivoGuardado.exists())
-                archivoGuardado.createNewFile();
-                
+               
             try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoGuardado));)
             {
                 oos.writeObject(j1);
