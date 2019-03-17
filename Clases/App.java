@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Clases;
 
 import java.io.EOFException;
@@ -18,15 +13,27 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @Version 1.0
+ * @Version 1.0.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class App
 {
+    /**
+     * Clase Scanner para la entrada por teclado del usuario.
+     */
     private static Scanner sc = new Scanner(System.in);
+    /**
+     * Jugador controlado por el usuario del programa.
+     */
     private Jugador j1;
+    /**
+     * Jugador controlado por la máquina.
+     */
     private Jugador j2;
-    private String path;
+    /**
+     * Ruta a guardar el archivo del jugador si desea guardar.
+     */
+    private final String path;
     
     /**
      * Constructor de la clase App que crea un jugador controlado por la maquina
@@ -228,7 +235,10 @@ public class App
             this.j1 = (Jugador) ois.readObject();
             j2 = (Jugador) ois.readObject();
         } catch (EOFException ex) {
-        } catch (IOException | ClassNotFoundException ex) {
+            System.err.println(ex.getMessage());
+        } catch (IOException | ClassNotFoundException ex) 
+        {
+            System.err.println(ex.getMessage());
         }
     }
 
@@ -366,7 +376,7 @@ public class App
                 
                 if(comprobarFila(fila) && comprobarColumna(columna))
                 {
-                    if(j1.getTableroBarcos().insertar(dir, fila, columna, j1.getListaBarcos().get(i)))
+                    if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(i)))
                     {
                         j1.getTableroBarcos().imprimirTablero();
                         i++;

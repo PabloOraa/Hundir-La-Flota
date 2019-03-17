@@ -5,14 +5,26 @@ import java.util.ArrayList;
 
 /**
  * Clase Jugador que representa a cada uno de los miembros de la partida
- * @Version 1.0
+ * @Version 1.0.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Jugador implements Serializable
 {
+    /**
+     * Nombre del jugador
+     */
     private final String nickname;
+    /**
+     * Tablero donde almacenará sus barcos en la partida
+     */
     private Tablero tableroBarcos;
+    /**
+     * Tablero donde almacena los resultados de sus disparos
+     */
     private Tablero tableroResultados;
+    /**
+     * Lista de los barcos del usuario
+     */
     private ArrayList<Barco> listaBarcos;
 
     /**
@@ -78,6 +90,20 @@ public class Jugador implements Serializable
     }
     
     /**
+     * Llama al método insertar con 4 parámetros del tableroBarcos.
+     * @param dir dirección del barco.
+     * @param fila Fila entre 1 y 10 en la que está la primera posición del barco.
+     * @param columna Carcater entre A y J que indica la primera posición del barco.
+     * @param brc Barco a introducir en las coordenadas indicadas.
+     * @return True si se ha insertado y false si no.
+     * @throws ExcepcionesBarco - Barco no entra o ya hay en esa posición.
+     */
+    public boolean insertarBarco(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
+    {
+        return tableroBarcos.insertar(dir, fila, columna, brc);
+    }
+    
+    /**
      * Dispara al otro jugador en una posición determinada.
      * <br />
      * Una vez disparemos, el otro jugador apuntará en su tablero si es Agua o Tocado
@@ -99,9 +125,9 @@ public class Jugador implements Serializable
             throw new ExcepcionesBarco(Textos.NOTFREEPOSITION);
         
         if(cadTexto.equals(Textos.FAIL))
-            referenciaTablero(tableroResultados, fila-1, tableroBarcos.getCoord(Character.toUpperCase(columna)), Textos.FAILLETTER);
+            referenciaTablero(fila-1, tableroBarcos.getCoord(Character.toUpperCase(columna)), Textos.FAILLETTER);
         else
-            referenciaTablero(tableroResultados, fila-1, tableroBarcos.getCoord(Character.toUpperCase(columna)), Textos.RIGHTLETTER);
+            referenciaTablero(fila-1, tableroBarcos.getCoord(Character.toUpperCase(columna)), Textos.RIGHTLETTER);
         return cadTexto;
     }
     
@@ -139,17 +165,16 @@ public class Jugador implements Serializable
         apuntar(fila, columna, res);
         return resultado;
     }
-
+    
     /**
-     * Guarda en su segundo tablero el resultado del disparo.
-     * @param fila Numero que representa la fila elegida por el usuario.
-     * @param columna Numero que representa la columna elegida por el usuario,
-     * convertida desde la letra.
-     * @param res Resultado en X u O de lo que ha ocurrido.
+     * Comprueba que un barco no tenga vidas
+     * @param brc Barco a comprobar
+     * @return True si no tiene y false si tiene vidas
      */
-    private void referenciaTablero(Tablero tab, int fila, int columna, char res)
+    private boolean comprobarBarco(Barco brc)
     {
-        tab.insertarResultado(fila, columna, res);
+        brc.reducirVida();
+        return brc.getVidas() == 0;
     }
     
     /**
@@ -167,7 +192,7 @@ public class Jugador implements Serializable
         
         return vivo;
     }
-
+    
     /**
      * Guarda en tablero de Barcos el resultado del disparo que nos han realizado.
      * @param fila Numero entre 0 y 9 que representa la fila elegida por el usuario.
@@ -180,14 +205,15 @@ public class Jugador implements Serializable
     }
     
     /**
-     * Comprueba que un barco no tenga vidas
-     * @param brc Barco a comprobar
-     * @return True si no tiene y false si tiene vidas
+     * Guarda en su segundo tablero el resultado del disparo.
+     * @param fila Numero entre 0 y 9 que representa la fila elegida por el usuario.
+     * @param columna Numero que representa la columna elegida por el usuario,
+     * convertida desde la letra.
+     * @param res Resultado en X u O de lo que ha ocurrido.
      */
-    private boolean comprobarBarco(Barco brc)
+    private void referenciaTablero(int fila, int columna, char res)
     {
-        brc.reducirVida();
-        return brc.getVidas() == 0;
+        tableroResultados.insertarResultado(fila, columna, res);
     }
     
     /**

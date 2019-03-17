@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
- * @Version 1.0
+ * @Version 1.0.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Tablero implements Serializable
@@ -38,36 +38,6 @@ public class Tablero implements Serializable
         for (char[] tablero1 : tablero)
             for (int j = 0; j < tablero1.length; j++)
                 tablero1[j] = Textos.EMPTY;
-    }
-    
-    /**
-     * Imprime el tablero tal cual se encuente en ese momento
-     */
-    public void imprimirTablero()
-    {
-        System.out.println(Textos.LINE);
-        for (char[] tablero1 : tablero)
-        {
-            for (int i = 0; i < tablero1.length; i++){
-                switch (tablero1[i])
-                {
-                    case 'A':
-                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
-                        break;
-                    case 'X':
-                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
-                        break;
-                    case 'O':
-                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
-                        break;
-                    default:
-                        System.out.print(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
-                        break;
-                }
-            }
-            System.out.print("\n");
-        }
-        System.out.println(Textos.LINE);
     }
     
     /**
@@ -420,12 +390,42 @@ public class Tablero implements Serializable
     /**
      * Guarda en el tablero el resultado del disparo en la posición indicada con
      * X en caso de haber fallado y O en caso de acertar.
-     * @param fila Fila a introducir el resultado.
+     * @param fila Fila entre 0 y 9 a introducir el resultado.
      * @param columna Columna a introducir el resultado.
      * @param res X u O en caso del restulado del disparo.
      */
     public void insertarResultado(int fila, int columna, char res)
     {
         tablero[fila][columna] = res;
+    }
+    
+    /**
+     * Imprime el tablero tal cual se encuente en ese momento
+     */
+    public void imprimirTablero()
+    {
+        System.out.println(Textos.LINE);
+        for (char[] tablero1 : tablero)
+        {
+            for (int i = 0; i < tablero1.length; i++){
+                switch (tablero1[i])
+                {
+                    case 'A':
+                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        break;
+                    case 'X':
+                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        break;
+                    case 'O':
+                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        break;
+                    default:
+                        System.out.print(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
+                        break;
+                }
+            }
+            System.out.print("\n");
+        }
+        System.out.println(Textos.LINE);
     }
 }
