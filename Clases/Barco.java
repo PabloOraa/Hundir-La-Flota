@@ -130,16 +130,16 @@ public class Barco implements Serializable
         {
             case 'P':
             case 'p':
-                return "Portaaviones";
+                return Textos.PORTAAVIONES;
             case 'B':
             case 'b':
-                return "Buque";
+                return Textos.BUQUE;
             case 'S':
             case 's':
-                return "Submarino";
+                return Textos.SUBMARINO;
             case 'L':
             case 'l':
-                return "Lancha";
+                return Textos.LANCHA;
             default:
                 return "";
         }

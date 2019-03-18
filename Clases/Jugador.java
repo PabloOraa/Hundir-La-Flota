@@ -47,10 +47,10 @@ public class Jugador implements Serializable
      */
     private void crearListaBarcos()
     {
-        listaBarcos.add(new Barco("Portaaviones",5));
-        listaBarcos.add(new Barco("Buque",3));
-        listaBarcos.add(new Barco("Submarino",2));
-        listaBarcos.add(new Barco("Lancha",1));
+        listaBarcos.add(new Barco(Textos.PORTAAVIONES,5));
+        listaBarcos.add(new Barco(Textos.BUQUE,3));
+        listaBarcos.add(new Barco(Textos.SUBMARINO,2));
+        listaBarcos.add(new Barco(Textos.LANCHA,1));
     }
 
     /**
