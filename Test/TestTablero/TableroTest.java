@@ -248,7 +248,7 @@ public class TableroTest
             char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('V', 1, Textos.COLUMN10, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.VERTICAL, 1, Textos.COLUMN10, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
                 assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
@@ -274,7 +274,7 @@ public class TableroTest
             char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('V', 3, Textos.COLUMN10, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.VERTICAL, 3, Textos.COLUMN10, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
                 assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
@@ -446,7 +446,7 @@ public class TableroTest
             char columna = Textos.COLUMN2;
             Tablero instance = new Tablero();
             try {
-                instance.insertar(Textos.COLUMN8, 1, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.HORIZONTAL, 1, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
                 assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
@@ -472,7 +472,7 @@ public class TableroTest
             char columna = Textos.COLUMN3;
             Tablero instance = new Tablero();
             try {
-                instance.insertar(Textos.COLUMN8, 1, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.HORIZONTAL, 1, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
                 assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
