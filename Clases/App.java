@@ -21,7 +21,8 @@ public class App
     /**
      * Clase Scanner para la entrada por teclado del usuario.
      */
-    private static Scanner sc = new Scanner(System.in);
+    private static final Scanner sc = new Scanner(System.in);
+
     /**
      * Jugador controlado por el usuario del programa.
      */
@@ -76,13 +77,19 @@ public class App
                 }
                 else
                 {   
+                    aplicacion.borrarPartida();
+                    System.out.println("Insertando barcos del " + aplicacion.j1.getNickname());
                     aplicacion.insertarBarcos(aplicacion.j1);
+                    System.out.println("Insertando barcos del " + aplicacion.j2.getNickname());
                     aplicacion.j2.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
+                    aplicacion.j2.getTableroBarcos().imprimirTablero();
                 }
             }
             else
             {   
+                System.out.println("Insertando barcos del " + aplicacion.j1.getNickname());
                 aplicacion.insertarBarcos(aplicacion.j1);
+                System.out.println("Insertando barcos del " + aplicacion.j2.getNickname());
                 aplicacion.j2.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
             }
             
@@ -171,7 +178,10 @@ public class App
             else if(salir)
             {
                 if(resultado.equals(Textos.PLAYERDEAD))
+                {   
                     System.out.println("El ganador es: " + turno.getNickname());
+                    borrarPartida();
+                }
             }
             else
             {
@@ -240,6 +250,17 @@ public class App
         {
             System.err.println(ex.getMessage());
         }
+    }
+    /**
+     * Borra la partida guardada al acabar la partida (si existe) o si no se 
+     * quiere cargar
+     */
+    private void borrarPartida() 
+    {
+        File arch = new File(path);
+        
+        if(arch.exists())
+            arch.delete();
     }
 
     /**

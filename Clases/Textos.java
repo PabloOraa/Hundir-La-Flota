@@ -2,7 +2,7 @@ package Clases;
 
 /**
  * Textos de la aplicación
- * @Version 1.0.1
+ * @Version 1.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public interface Textos 
@@ -106,7 +106,13 @@ public interface Textos
     /**
      * Texto que indica que el barco es demasiado grande para la posición elegida.
      */
-    String TOOBIGSHIP = "El barco no se puede situar en la posición indicada";
+    String TOOBIGSHIP = "El barco es demasiado grande para la posición elegida.";
+    /**
+     * Texto que indica que el barco no se puede introducir porque algna de las
+     * casillas está ocupada.
+     */
+    String SQUARENOTFREE = "Casillas ocupadas o con sus extremos con un barco"
+            + " en la misma dirección.";
     /**
      * No se puede disparar en la posición seleccionada.
      */

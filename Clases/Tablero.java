@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
- * @Version 1.0.1
+ * @Version 1.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Tablero implements Serializable
@@ -108,12 +108,10 @@ public class Tablero implements Serializable
      * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarVertical(Barco brc, int fila, char columna)
+    private boolean comprobarVertical(Barco brc, int fila, char columna)
     {
         int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!(fila >= 0 && fila+tamBarco-1 < tablero.length)) //fila + tambBarco-1 porque se cuenta la fila pasada.
-            return false;
         
         for (int i = fila-2, j = getCoord(Character.toUpperCase(columna)), k = 0; k < tamBarco+4; i++, k++)
             if(i >= 0 && i < 10)
@@ -142,13 +140,11 @@ public class Tablero implements Serializable
      * @param columna columna en la que se desea introducir la posición del barco
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarHorizontal(Barco brc, int fila, char columna)
+    private boolean comprobarHorizontal(Barco brc, int fila, char columna)
     {      
         int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(!(getCoord(Character.toUpperCase(columna)) >= 0 && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length)) //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
-            return false;
-        
+
         for (int i = fila, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; j++, k++)
             if(j >= 0 && j < 10)
                 if(j == getCoord(Character.toUpperCase(columna)) -2 || j == getCoord(Character.toUpperCase(columna)) + tamBarco)
@@ -178,23 +174,10 @@ public class Tablero implements Serializable
      * @param carDir caracter que marca si es Derecha o Izquiera para indicar el sentido de la diagonal
      * @return true si es posible y false si no lo es
      */
-    public boolean comprobarDiagonal(Barco brc, int fila, char columna, char carDir)
+    private boolean comprobarDiagonal(Barco brc, int fila, char columna, char carDir)
     {
         int tamBarco = brc.getLength();
         char Brc = ' ';
-        if(fila >= 0  && fila+tamBarco-1 < tablero.length)
-            if(carDir == Textos.DIAGONAL)
-            {
-                if(!(getCoord(Character.toUpperCase(columna)) >= 0  && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length))
-                    return false;
-            }
-            else
-            {
-                if(!(getCoord(Character.toUpperCase(columna)) < tablero.length  && getCoord(Character.toUpperCase(columna))-tamBarco+1 >= 0))
-                    return false;
-            }
-        else
-            return false;    
         
         if(carDir == Textos.DIAGONAL)
         {    
@@ -252,6 +235,65 @@ public class Tablero implements Serializable
     }
     
     /**
+     * Comprueba que se pueda introducir el barco y que no se salga del tablero
+     * cuando se hace en diagonal o en diagonal inversa.
+     * @param brc Barco a introducir.
+     * @param fila Fila entre 0 y 9 que marca el inicio del barco.
+     * @param columna Columna entre A y J que marca el inicio del barco.
+     * @param carDir Dirección Diagonal (D) y Diagonal Inversa (I).
+     * @return True si es posible y false si no.
+     */
+    private boolean comprobarDiagonalTamanio(Barco brc, int fila, char columna, char carDir)
+    {
+        int tamBarco = brc.getLength();
+        if(fila >= 0  && fila+tamBarco-1 < tablero.length)
+            if(carDir == Textos.DIAGONAL)
+            {
+                if(!(getCoord(Character.toUpperCase(columna)) >= 0  && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length))
+                    return false;
+            }
+            else
+            {
+                if(!(getCoord(Character.toUpperCase(columna)) < tablero.length  && getCoord(Character.toUpperCase(columna))-tamBarco+1 >= 0))
+                    return false;
+            }
+        else
+            return false;  
+        
+        return true;
+    }
+    
+    /**
+     * Comprueba que se pueda introducir el barco y que no se salga del tablero
+     * cuando se hace en vertical.
+     * @param brc Barco a introducir.
+     * @param fila Fila entre 0 y 9 que marca el inicio del barco.
+     * @param columna Columna entre A y J que marca el inicio del barco.
+     * @return True si es posible y false si no.
+     */
+    private boolean comprobarVerticalTamanio(Barco brc, int fila, char columna)
+    {
+        int tamBarco = brc.getLength();
+        //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
+        return (fila >= 0 && fila+tamBarco-1 < tablero.length);//fila + tambBarco-1 porque se cuenta la fila pasada.
+    }
+    
+    /**
+     * Comprueba que se pueda introducir el barco y que no se salga del tablero
+     * cuando se hace en horizontal.
+     * @param brc Barco a introducir.
+     * @param fila Fila entre 0 y 9 que marca el inicio del barco.
+     * @param columna Columna entre A y J que marca el inicio del barco.
+     * @return True si es posible y false si no.
+     */
+    private boolean comprobarHorizontalTamanio(Barco brc, int fila, char columna)
+    {
+        int tamBarco = brc.getLength();
+        //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
+        return getCoord(Character.toUpperCase(columna)) >= 0 && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length;
+    }
+    
+    /**
      * Inserta en el tablero en función de un archivo csv que se pase con la estructura
      * Direccion;Columna;Fila;Barco gracias a la libreria javacsv
      * @param archivo Archivo csv que incluye las coordenadas de cada uno de los barcos de un jugador.
@@ -297,43 +339,57 @@ public class Tablero implements Serializable
     {
         fila = fila-1; //Ajusta la fila elegida a la matriz
         if(brc.getName().toUpperCase().equals(Textos.LANCHA.toUpperCase()))
-            if(comprobarLancha(brc,fila,columna))
-            {
-                insertarHorizontal(fila, Character.toUpperCase(columna), brc);
-                return true;
-            }
-            else
-                throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
-        else
-        {
-            if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
-                if(comprobarHorizontal(brc, fila, columna))
+            if(comprobarHorizontalTamanio(brc,fila,columna) && comprobarVerticalTamanio(brc,fila,columna) 
+                    && comprobarDiagonalTamanio(brc,fila,columna, Textos.DIAGONAL) 
+                    && comprobarDiagonalTamanio(brc,fila,columna,Textos.INVERSEDIAGONAL))
+                if(comprobarLancha(brc,fila,columna))
                 {
                     insertarHorizontal(fila, Character.toUpperCase(columna), brc);
                     return true;
                 }
                 else
-                    throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
-            else if(Character.toUpperCase(dir) == Textos.VERTICAL)
-                if(comprobarVertical(brc, fila, columna))
-                {
-                    insertarVertical(fila,Character.toUpperCase(columna),brc);
-                    return true;
-                }
-                else
-                    throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
-            else    
-                if(comprobarDiagonal(brc, fila, columna, Character.toUpperCase(dir)))
-                    if(Character.toUpperCase(dir) == Textos.DIAGONAL)
+                    throw new ExcepcionesBarco(Textos.SQUARENOTFREE);
+            else
+                throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
+        else
+        {
+            if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
+                if(comprobarHorizontalTamanio(brc,fila,columna))
+                    if(comprobarHorizontal(brc, fila, columna))
                     {
-                        insertarDiagonal(fila,Character.toUpperCase(columna),brc);
+                        insertarHorizontal(fila, Character.toUpperCase(columna), brc);
                         return true;
                     }
                     else
+                        throw new ExcepcionesBarco(Textos.SQUARENOTFREE);
+                else
+                    throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
+            else if(Character.toUpperCase(dir) == Textos.VERTICAL)
+                if(comprobarVerticalTamanio(brc,fila,columna))
+                    if(comprobarVertical(brc, fila, columna))
                     {
-                        insertarDiagonalInversa(fila,Character.toUpperCase(columna),brc);
+                        insertarVertical(fila,Character.toUpperCase(columna),brc);
                         return true;
                     }
+                    else
+                        throw new ExcepcionesBarco(Textos.SQUARENOTFREE);
+                else
+                    throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
+            else    
+                if(comprobarDiagonalTamanio(brc,fila,columna, Character.toUpperCase(dir)))
+                    if(comprobarDiagonal(brc, fila, columna, Character.toUpperCase(dir)))
+                        if(Character.toUpperCase(dir) == Textos.DIAGONAL)
+                        {    
+                            insertarDiagonal(fila,Character.toUpperCase(columna),brc);
+                            return true;
+                        }
+                        else
+                        {
+                            insertarDiagonalInversa(fila,Character.toUpperCase(columna),brc);
+                            return true;
+                        }
+                    else
+                        throw new ExcepcionesBarco(Textos.SQUARENOTFREE);    
                 else
                     throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
         }
