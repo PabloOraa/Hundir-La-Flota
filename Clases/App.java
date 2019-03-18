@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @Version 1.0.1
+ * @Version 1.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class App
@@ -55,49 +55,40 @@ public class App
      */
     public static void main(String[] args)
     {
-        try 
+        System.out.println(Textos.WELCOMETEXT);
+        System.out.println(Textos.ASKNICKNAME);
+        String nickname = sc.nextLine();
+        Jugador jtemp = new Jugador(nickname);
+            
+        App aplicacion = new App(jtemp);
+            
+            
+        if(aplicacion.buscarPartida())
         {
-            System.out.println(Textos.ASKNICKNAME);
-            String nickname = sc.nextLine();
-            Jugador jtemp = new Jugador(nickname);
-            
-            App aplicacion = new App(jtemp);
-            
-            
-            if(aplicacion.buscarPartida())
-            {
-                SimpleDateFormat sdf = new SimpleDateFormat(Textos.FORMAT);
-                System.out.println(Textos.SAVEFILEFOUND 
-                        + sdf.format(new Date(new File(aplicacion.path).lastModified())) + Textos.ASKLOAD);
-                String respuesta = sc.nextLine(); 
-                if(respuesta.toUpperCase().equals(Textos.AFFIRMATIVE))
-                {        
-                    aplicacion.cargarPartida();
-                    System.out.println("Cargando");
-                }
-                else
-                {   
-                    aplicacion.borrarPartida();
-                    System.out.println("Insertando barcos del " + aplicacion.j1.getNickname());
-                    aplicacion.insertarBarcos(aplicacion.j1);
-                    System.out.println("Insertando barcos del " + aplicacion.j2.getNickname());
-                    aplicacion.j2.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
-                    aplicacion.j2.getTableroBarcos().imprimirTablero();
-                }
+            SimpleDateFormat sdf = new SimpleDateFormat(Textos.FORMAT);
+            System.out.println(Textos.SAVEFILEFOUND 
+                    + sdf.format(new Date(new File(aplicacion.path).lastModified())) + Textos.ASKLOAD);
+            String respuesta = sc.nextLine(); 
+            if(respuesta.toUpperCase().equals(Textos.AFFIRMATIVE))
+            {        
+                aplicacion.cargarPartida();
+                System.out.println("Cargando");
             }
             else
             {   
-                System.out.println("Insertando barcos del " + aplicacion.j1.getNickname());
+                aplicacion.borrarPartida();
                 aplicacion.insertarBarcos(aplicacion.j1);
-                System.out.println("Insertando barcos del " + aplicacion.j2.getNickname());
-                aplicacion.j2.getTableroBarcos().insertar(new File("src/Datos/posiciones.csv"));
+                aplicacion.insertarBarcos(aplicacion.j2, "src/Datos/posiciones.csv");
+                aplicacion.j2.getTableroBarcos().imprimirTablero();
             }
-            
-            aplicacion.jugar();
-        } catch (ExcepcionesBarco ex) {
-            System.err.println(ex.getMessage());
         }
-
+        else
+        {   
+            //aplicacion.insertarBarcos(aplicacion.j1);
+            aplicacion.insertarBarcos(aplicacion.j2, "src/Datos/posiciones.csv");
+            aplicacion.j2.getTableroBarcos().imprimirTablero();
+        }       
+        aplicacion.jugar();
     }
 
     /**
@@ -125,7 +116,7 @@ public class App
                     case 1:
                         System.out.println("Jugador " + turno.getNickname());
                         imprimirTableros(turno);
-                        System.out.println("\n\n\nJugador " + anterior.getNickname());
+                        System.out.println("\n\nJugador " + anterior.getNickname());
                         imprimirTableros(anterior);
                         try
                         {
@@ -162,7 +153,7 @@ public class App
                         cambiarJugador = true;
                     System.out.println("Jugador " + turno.getNickname());
                     imprimirTableros(turno);
-                    System.out.println("\n\n\nJugador " + anterior.getNickname());
+                    System.out.println("\n\nJugador " + anterior.getNickname());
                     imprimirTableros(anterior);
                 } catch (ExcepcionesBarco ex)
                 {
@@ -206,19 +197,15 @@ public class App
      */
     public boolean save()
     {
-        try 
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File(path)));)
         {
-            File archivoGuardado = new File(path);
-               
-            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivoGuardado));)
-            {
-                oos.writeObject(j1);
-                oos.writeObject(j2);
-                return true;
-            }
-        } 
+            oos.writeObject(j1);
+            oos.writeObject(j2);
+            return true;
+        }
         catch (IOException ex) 
         {
+            System.err.println(ex.getMessage());
             return false;
         }
     }
@@ -229,9 +216,7 @@ public class App
      */
     public boolean buscarPartida()
     {
-        File archivoGuardado = new File(path); 
-        
-        return archivoGuardado.exists();
+        return new File(path).exists();
     }
     
     /**
@@ -241,16 +226,15 @@ public class App
     {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(path)));) 
         {
-
             this.j1 = (Jugador) ois.readObject();
             j2 = (Jugador) ois.readObject();
         } catch (EOFException ex) {
             System.err.println(ex.getMessage());
-        } catch (IOException | ClassNotFoundException ex) 
-        {
+        } catch (IOException | ClassNotFoundException ex) {
             System.err.println(ex.getMessage());
         }
     }
+    
     /**
      * Borra la partida guardada al acabar la partida (si existe) o si no se 
      * quiere cargar
@@ -258,7 +242,6 @@ public class App
     private void borrarPartida() 
     {
         File arch = new File(path);
-        
         if(arch.exists())
             arch.delete();
     }
@@ -279,10 +262,8 @@ public class App
         char columna;
         if(turno.equals(j1))
         {    
-            System.out.println(Textos.ASKROW);
-            fila = Integer.parseInt(sc.nextLine());
-            System.out.println(Textos.ASKCOLUMN);
-            columna = sc.nextLine().charAt(0);
+            fila = pedirFila();
+            columna = pedirColumna();
         }
         else 
         {
@@ -296,6 +277,26 @@ public class App
             System.err.println(Textos.NOTVALIDFIELDS);
         
         return "";
+    }
+    
+    /**
+     * Pide una fila al usuario que introducirá por teclado
+     * @return Número introducido por teclado.
+     */
+    private int pedirFila()
+    {
+        System.out.println(Textos.ASKROW);
+        return Integer.parseInt(sc.nextLine());
+    }
+    
+    /**
+     * Pide la columna al usuario para que la introduzca por teclado.
+     * @return Caracter que indica la columna.
+     */
+    private char pedirColumna()
+    {
+        System.out.println(Textos.ASKCOLUMN);
+        return sc.nextLine().charAt(0);
     }
     
     /**
@@ -325,8 +326,7 @@ public class App
      */
     private int generarFila()
     {
-        Random r = new Random();
-        return 1+(r.nextInt(10));
+        return 1+(new Random().nextInt(10));
     }
 
     /**
@@ -335,13 +335,12 @@ public class App
      */
     private char generarColumna()
     {
-        Random r = new Random();
-        return obtenerCaracter(1+(r.nextInt(10)));
+        return obtenerCaracter(1+(new Random().nextInt(10)));
     }
 
     /**
-     * A partir del número generado para la columna, se obtiene el caracter 
-     * asociado.
+     * A partir del número generado para la columna para el NPC, se obtiene el 
+     * caracter asociado.
      * @param i Numero de columna entre 1 y 10.
      * @return Caracter entre A y J asociado al número de columna.
      */
@@ -350,25 +349,25 @@ public class App
         switch(i)
         {
             case 1:
-                return 'A';
+                return Textos.COLUMN1;
             case 2:
-                return 'B';
+                return Textos.COLUMN2;
             case 3:
-                return 'C';
+                return Textos.COLUMN3;
             case 4:
-                return 'D';
+                return Textos.COLUMN4;
             case 5:
-                return 'E';
+                return Textos.COLUMN5;
             case 6:
-                return 'F';
+                return Textos.COLUMN6;
             case 7:
-                return 'G';
+                return Textos.COLUMN7;
             case 8:
-                return 'H';
+                return Textos.COLUMN8;
             case 9:
-                return 'I';
+                return Textos.COLUMN9;
             default: /*Se considera el Default la letra J*/
-                return 'J';
+                return Textos.COLUMN10;
         }
     }
 
@@ -381,6 +380,7 @@ public class App
      */
     private void insertarBarcos(Jugador j1)
     {
+        System.out.println("Insertando barcos del jugador " + j1.getNickname());
         char dir, columna;
         int fila;
         for(int i = 0; i < j1.getListaBarcos().size();)
@@ -390,10 +390,8 @@ public class App
                 System.out.println("Se va a introducir el: " + j1.getListaBarcos().get(i).getName());
                 System.out.println(Textos.ASKDIR);
                 dir = sc.nextLine().charAt(0);
-                System.out.println(Textos.ASKROW);
-                fila = Integer.parseInt(sc.nextLine());
-                System.out.println(Textos.ASKCOLUMN);
-                columna = sc.nextLine().charAt(0);
+                fila = pedirFila();
+                columna = pedirColumna();
                 
                 if(comprobarFila(fila) && comprobarColumna(columna))
                 {
@@ -410,5 +408,19 @@ public class App
                 System.err.println(ex.getMessage());
             }
         }
+    }
+    
+    /**
+     * Inserta los barcos en la posición que indique el jugador mediante un fichero
+     * CSV que el jugador indicará la ruta.
+     * @param j1 Jugador en el que se van a introducir los barcos según indique 
+     * el usuario
+     * @param path Ruta en la que se encuentra el archivo CSV con los barcos a 
+     * insertar.
+     */
+    private boolean insertarBarcos(Jugador j1, String path)
+    {
+        System.out.println("Insertando barcos del jugador " + j1.getNickname());
+        return j1.insertarBarco(new File(path));
     }
 }

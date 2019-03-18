@@ -1,11 +1,12 @@
 package Clases;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Clase Jugador que representa a cada uno de los miembros de la partida
- * @Version 1.0.1
+ * @Version 1.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Jugador implements Serializable
@@ -25,7 +26,7 @@ public class Jugador implements Serializable
     /**
      * Lista de los barcos del usuario
      */
-    private ArrayList<Barco> listaBarcos;
+    private final ArrayList<Barco> listaBarcos;
 
     /**
      * Constructor de la clase jugador que cea los tableros, Barcos y nombre del
@@ -101,6 +102,21 @@ public class Jugador implements Serializable
     public boolean insertarBarco(char dir, int fila, char columna, Barco brc) throws ExcepcionesBarco
     {
         return tableroBarcos.insertar(dir, fila, columna, brc);
+    }
+    
+    /**
+     * Inserta los barcos del jugador a partir de un fichero CSV
+     * @param archivo Archivo CSV con los barcos a insertar.
+     * @return True si se han insertado correctamente.
+     */
+    public boolean insertarBarco(File archivo)
+    {
+        try {
+            return tableroBarcos.insertar(archivo);
+        } catch (ExcepcionesBarco ex) {
+            System.err.println(ex.getMessage());
+            return false;
+        }
     }
     
     /**

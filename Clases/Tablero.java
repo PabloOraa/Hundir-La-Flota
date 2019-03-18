@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
- * @Version 1.1
+ * @Version 1.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Tablero implements Serializable
@@ -75,25 +75,25 @@ public class Tablero implements Serializable
     {
         switch(columna)
         {
-            case 'A':
+            case Textos.COLUMN1:
                 return 0;
-            case 'B':
+            case Textos.COLUMN2:
                 return 1;
-            case 'C':
+            case Textos.COLUMN3:
                 return 2;
-            case 'D':
+            case Textos.COLUMN4:
                 return 3;
-            case 'E':
+            case Textos.COLUMN5:
                 return 4;
-            case 'F':
+            case Textos.COLUMN6:
                 return 5;
-            case 'G':
+            case Textos.COLUMN7:
                 return 6;
-            case 'H':
+            case Textos.COLUMN8:
                 return 7;
-            case 'I':
+            case Textos.COLUMN9:
                 return 8;
-            case 'J':
+            case Textos.COLUMN10:
                 return 9;
             default:
                 return -1;
@@ -198,7 +198,7 @@ public class Tablero implements Serializable
                             return false;
         }
         else
-            for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))-2, k = 0; k < tamBarco+4; i++,j--, k++)
+            for (int i = fila-2, j = getCoord(Character.toUpperCase(columna))+2, k = 0; k < tamBarco+4; i++,j--, k++)
                 if((i > 0 && i < 10) && (j > 0 && j < 10))
                     if((i == fila -2 || i == fila + tamBarco))
                     {    
@@ -271,7 +271,7 @@ public class Tablero implements Serializable
      * @param columna Columna entre A y J que marca el inicio del barco.
      * @return True si es posible y false si no.
      */
-    private boolean comprobarVerticalTamanio(Barco brc, int fila, char columna)
+    private boolean comprobarVerticalTamanio(Barco brc, int fila)
     {
         int tamBarco = brc.getLength();
         //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
@@ -286,9 +286,10 @@ public class Tablero implements Serializable
      * @param columna Columna entre A y J que marca el inicio del barco.
      * @return True si es posible y false si no.
      */
-    private boolean comprobarHorizontalTamanio(Barco brc, int fila, char columna)
+    private boolean comprobarHorizontalTamanio(Barco brc, char columna)
     {
         int tamBarco = brc.getLength();
+        System.out.println(getCoord(Character.toUpperCase(columna)));
         //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
         return getCoord(Character.toUpperCase(columna)) >= 0 && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length;
     }
@@ -297,9 +298,10 @@ public class Tablero implements Serializable
      * Inserta en el tablero en función de un archivo csv que se pase con la estructura
      * Direccion;Columna;Fila;Barco gracias a la libreria javacsv
      * @param archivo Archivo csv que incluye las coordenadas de cada uno de los barcos de un jugador.
+     * @return True si se ha insertado correctamente y false si no.
      * @throws Clases.ExcepcionesBarco con el mensaje Archivo no encontrado en caso de que ocurra.
      */
-    public void insertar(File archivo) throws ExcepcionesBarco
+    public boolean insertar(File archivo) throws ExcepcionesBarco
     {
         try
         {
@@ -316,6 +318,7 @@ public class Tablero implements Serializable
             
                 insertar(dir,fila,columna,brc);
             }
+            return true;
         } catch (FileNotFoundException ex )
         {
             System.err.println(Textos.FILENOTFOUND);
@@ -323,6 +326,7 @@ public class Tablero implements Serializable
         {
             System.err.println(Textos.READERROR);
         }
+        return false;
     }
 
     /**
@@ -339,7 +343,7 @@ public class Tablero implements Serializable
     {
         fila = fila-1; //Ajusta la fila elegida a la matriz
         if(brc.getName().toUpperCase().equals(Textos.LANCHA.toUpperCase()))
-            if(comprobarHorizontalTamanio(brc,fila,columna) && comprobarVerticalTamanio(brc,fila,columna) 
+            if(comprobarHorizontalTamanio(brc,columna) && comprobarVerticalTamanio(brc,fila) 
                     && comprobarDiagonalTamanio(brc,fila,columna, Textos.DIAGONAL) 
                     && comprobarDiagonalTamanio(brc,fila,columna,Textos.INVERSEDIAGONAL))
                 if(comprobarLancha(brc,fila,columna))
@@ -354,7 +358,7 @@ public class Tablero implements Serializable
         else
         {
             if(Character.toUpperCase(dir) == Textos.HORIZONTAL)
-                if(comprobarHorizontalTamanio(brc,fila,columna))
+                if(comprobarHorizontalTamanio(brc,columna))
                     if(comprobarHorizontal(brc, fila, columna))
                     {
                         insertarHorizontal(fila, Character.toUpperCase(columna), brc);
@@ -365,7 +369,7 @@ public class Tablero implements Serializable
                 else
                     throw new ExcepcionesBarco(Textos.TOOBIGSHIP);
             else if(Character.toUpperCase(dir) == Textos.VERTICAL)
-                if(comprobarVerticalTamanio(brc,fila,columna))
+                if(comprobarVerticalTamanio(brc,fila))
                     if(comprobarVertical(brc, fila, columna))
                     {
                         insertarVertical(fila,Character.toUpperCase(columna),brc);
@@ -466,13 +470,13 @@ public class Tablero implements Serializable
             for (int i = 0; i < tablero1.length; i++){
                 switch (tablero1[i])
                 {
-                    case 'A':
+                    case Textos.EMPTY:
                         System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
                         break;
-                    case 'X':
+                    case Textos.FAILLETTER:
                         System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
                         break;
-                    case 'O':
+                    case Textos.RIGHTLETTER:
                         System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
                         break;
                     default:

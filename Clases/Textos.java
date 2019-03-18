@@ -96,6 +96,46 @@ public interface Textos
      */
     char VERTICAL = 'V';
     /**
+     * Primera Columna (A) de la tabla
+     */
+    char COLUMN1 = 'A';
+    /**
+     * Primera Columna (B) de la tabla
+     */
+    char COLUMN2 = 'B';
+    /**
+     * Primera Columna (C) de la tabla
+     */
+    char COLUMN3 = 'C';
+    /**
+     * Primera Columna (D) de la tabla
+     */
+    char COLUMN4 = 'D';
+    /**
+     * Primera Columna (E) de la tabla
+     */
+    char COLUMN5 = 'E';
+    /**
+     * Primera Columna (F) de la tabla
+     */
+    char COLUMN6 = 'F';
+    /**
+     * Primera Columna (G) de la tabla
+     */
+    char COLUMN7 = 'G';
+    /**
+     * Primera Columna (H) de la tabla
+     */
+    char COLUMN8 = 'H';
+    /**
+     * Primera Columna (I) de la tabla
+     */
+    char COLUMN9 = 'I';
+    /**
+     * Primera Columna (J) de la tabla
+     */
+    char COLUMN10 = 'J';
+    /**
      * Texto que indica que no se ha encontrado el archivo.
      */
     String FILENOTFOUND = "Archivo no encontrado";
