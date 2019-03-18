@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 /**
  * Clase TestJugador que representa todos los test realizados a la clase Barcos
- * @Version 1.0.1
+ * @Version 1.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class JugadorTest 
@@ -23,7 +23,7 @@ public class JugadorTest
         System.out.println("Disparar");
         Jugador j2 = new Jugador(Textos.NPC);
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Jugador instance = new Jugador("Prueba");
         String expResult = Textos.FAIL;
         String result = instance.Disparar(j2, fila, columna);
@@ -40,7 +40,7 @@ public class JugadorTest
         System.out.println("Disparar");
         Jugador j2 = new Jugador(Textos.NPC);
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Jugador instance = new Jugador("Prueba");
         String expResult = Textos.RIGHT;
         j2.insertarBarco(Textos.VERTICAL, fila, columna, new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length()));
@@ -58,7 +58,7 @@ public class JugadorTest
         System.out.println("Disparar");
         Jugador j2 = new Jugador(Textos.NPC);
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Jugador instance = new Jugador("Prueba");
         String expResult = Textos.ENDOFSHIP;
         j2.insertarBarco(Textos.VERTICAL, fila, columna, new Barco(Textos.LANCHA, 1));
@@ -76,7 +76,7 @@ public class JugadorTest
         System.out.println("Disparar");
         Jugador j2 = new Jugador(Textos.NPC);
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Jugador instance = new Jugador("Prueba");
         String expResult = Textos.PLAYERDEAD;
         for(int i = 0; i < j2.getListaBarcos().size()-1;i++) //Quitamos las vidas de Portaaviones, Buque y Submarino

@@ -4,14 +4,12 @@ import Clases.Barco;
 import Clases.ExcepcionesBarco;
 import Clases.Tablero;
 import Clases.Textos;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  * Clase TestTablero que representa todos los test realizados a la clase Barcos
- * @Version 1.0.1
+ * @Version 1.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class TableroTest 
@@ -23,9 +21,9 @@ public class TableroTest
     public void testGetPos_int_char() {
         System.out.println("getPos");
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Tablero instance = new Tablero();
-        char expResult = 'A';
+        char expResult = Textos.COLUMN1;
         char result = instance.getPos(fila, columna);
         assertEquals(expResult, result);
     }
@@ -39,7 +37,7 @@ public class TableroTest
         int fila = 0;
         int columna = 7;
         Tablero instance = new Tablero();
-        char expResult = 'A';
+        char expResult = Textos.COLUMN1;
         char result = instance.getPos(fila, columna);
         assertEquals(expResult, result);
     }
@@ -50,7 +48,7 @@ public class TableroTest
     @Test
     public void testGetCoord() {
         System.out.println("getCoord");
-        char columna = 'J';
+        char columna = Textos.COLUMN10;
         Tablero instance = new Tablero();
         int expResult = 9;
         int result = instance.getCoord(columna);
@@ -80,7 +78,7 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
@@ -99,13 +97,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 10;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -117,13 +115,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 10;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -135,13 +133,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 2;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -153,13 +151,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 2;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -171,13 +169,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 6;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -189,13 +187,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 7;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -207,13 +205,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 8;
-            char columna = 'H';
+            char columna = Textos.COLUMN8;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -225,13 +223,13 @@ public class TableroTest
             System.out.println("comprobarVertical");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 9;
-            char columna = 'I';
+            char columna = Textos.COLUMN9;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     
@@ -247,12 +245,12 @@ public class TableroTest
             
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 6;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('V', 1, 'J', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar('V', 1, Textos.COLUMN10, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             boolean expResult = true;
             boolean result = instance.insertar(Textos.VERTICAL, fila, columna,brc);
@@ -273,12 +271,12 @@ public class TableroTest
             
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 6;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('V', 3, 'J', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar('V', 3, Textos.COLUMN10, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             instance.insertar(Textos.VERTICAL, fila, columna,brc);
         } catch (ExcepcionesBarco ex) {
@@ -295,13 +293,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 10;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     
@@ -314,13 +312,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 10;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -332,13 +330,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 5;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -350,13 +348,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -368,13 +366,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+            assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
         }
     }
     /**
@@ -386,13 +384,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 5;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     
@@ -405,13 +403,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
             int fila = 7;
-            char columna = 'H';
+            char columna = Textos.COLUMN8;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -423,13 +421,13 @@ public class TableroTest
             System.out.println("comprobarHorizontal");
             Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
             int fila = 9;
-            char columna = 'I';
+            char columna = Textos.COLUMN9;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     
@@ -445,12 +443,12 @@ public class TableroTest
             
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'B';
+            char columna = Textos.COLUMN2;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('H', 1, 'H', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.COLUMN8, 1, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             boolean expResult = true;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
@@ -471,12 +469,12 @@ public class TableroTest
             
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'C';
+            char columna = Textos.COLUMN3;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('H', 1, 'H', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.COLUMN8, 1, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             boolean expResult = false;
             boolean result = instance.insertar(Textos.HORIZONTAL, fila, columna, brc);
@@ -495,13 +493,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 9;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     
@@ -514,13 +512,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 4;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -532,13 +530,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 5;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -550,13 +548,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -568,13 +566,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -586,13 +584,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 5;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -604,13 +602,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 6;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -622,13 +620,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
             int fila = 7;
-            char columna = 'H';
+            char columna = Textos.COLUMN8;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -640,13 +638,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
             int fila = 8;
-            char columna = 'I';
+            char columna = Textos.COLUMN9;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
    
@@ -662,18 +660,18 @@ public class TableroTest
             
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'C';
+            char columna = Textos.COLUMN3;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('D', 7, 'H', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.COLUMN4, 7, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             boolean expResult = true;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -686,18 +684,18 @@ public class TableroTest
         try {
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'C';
+            char columna = Textos.COLUMN3;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('D', 6, 'H', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.DIAGONAL, 6, Textos.COLUMN8, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             boolean expResult = false;
             boolean result = instance.insertar(Textos.DIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.SQUARENOTFREE,ex.getMessage());;
+            assertEquals(Textos.SQUARENOTFREE,ex.getMessage());
         }
     }
 
@@ -710,13 +708,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 10;
-            char columna = 'A';
+            char columna = Textos.COLUMN1;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     
@@ -729,13 +727,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 4;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -747,13 +745,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 6;
-            char columna = 'C';
+            char columna = Textos.COLUMN3;
             Tablero instance = new Tablero();
             boolean expResult = false;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -765,13 +763,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'E';
+            char columna = Textos.COLUMN5;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -783,13 +781,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -801,13 +799,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 5;
-            char columna = 'G';
+            char columna = Textos.COLUMN7;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -819,13 +817,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
             int fila = 6;
-            char columna = 'J';
+            char columna = Textos.COLUMN10;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -837,13 +835,13 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
             int fila = 7;
-            char columna = 'C';
+            char columna = Textos.COLUMN3;
             Tablero instance = new Tablero();
             boolean expResult = true;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
             assertEquals(expResult, result);
         } catch (ExcepcionesBarco ex) {
-            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());;
+            assertEquals(Textos.TOOBIGSHIP,ex.getMessage());
         }
     }
     /**
@@ -855,7 +853,7 @@ public class TableroTest
             System.out.println("comprobarDiagonal");
             Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
             int fila = 8;
-            char columna = 'B';
+            char columna = Textos.COLUMN2;
             Tablero instance = new Tablero();
             instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
         } catch (ExcepcionesBarco ex) {
@@ -875,12 +873,12 @@ public class TableroTest
             
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'G';
+            char columna = Textos.COLUMN7;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('I', 7, 'C', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.COLUMN9, 7, Textos.COLUMN3, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             boolean expResult = true;
             boolean result = instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
@@ -899,12 +897,12 @@ public class TableroTest
         try {
             Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
             int fila = 1;
-            char columna = 'G';
+            char columna = Textos.COLUMN7;
             Tablero instance = new Tablero();
             try {
-                instance.insertar('I', 6, 'C', new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
+                instance.insertar(Textos.COLUMN9, 6, Textos.COLUMN3, new Barco(Textos.BUQUE,Textos.BUQUEFIGURE.length()));
             } catch (ExcepcionesBarco ex) {
-                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());;
+                assertEquals(Textos.NOTFREEPOSITION,ex.getMessage());
             }
             instance.insertar(Textos.INVERSEDIAGONAL,fila,columna,brc);
         } catch (ExcepcionesBarco ex) {
@@ -919,9 +917,9 @@ public class TableroTest
     @Test
     public void testInsertar_4args() throws Exception {
         System.out.println("insertar");
-        char dir = 'D';
+        char dir = Textos.DIAGONAL;
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
         Tablero instance = new Tablero();
         boolean expResult = true;
@@ -935,9 +933,9 @@ public class TableroTest
     @Test
     public void testInsertar_4args_2() throws Exception {
         System.out.println("insertar");
-        char dir = 'H';
+        char dir = Textos.HORIZONTAL;
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Barco brc = new Barco(Textos.BUQUE, Textos.BUQUEFIGURE.length());
         Tablero instance = new Tablero();
         boolean expResult = true;
@@ -951,9 +949,9 @@ public class TableroTest
     @Test
     public void testInsertar_4args_3() throws Exception {
         System.out.println("insertar");
-        char dir = 'V';
+        char dir = Textos.VERTICAL;
         int fila = 5;
-        char columna = 'E';
+        char columna = Textos.COLUMN5;
         Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
         Tablero instance = new Tablero();
         boolean expResult = true;
@@ -967,9 +965,9 @@ public class TableroTest
     @Test
     public void testInsertar_4args_4() throws Exception {
         System.out.println("insertar");
-        char dir = 'I';
+        char dir = Textos.INVERSEDIAGONAL;
         int fila = 5;
-        char columna = 'E';
+        char columna = Textos.COLUMN5;
         Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
         Tablero instance = new Tablero();
         boolean expResult = true;
@@ -983,9 +981,9 @@ public class TableroTest
     @Test
     public void testInsertar_4args_L() throws Exception {
         System.out.println("insertar");
-        char dir = 'D';
+        char dir = Textos.DIAGONAL;
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Barco brc = new Barco(Textos.LANCHA, 1);
         Tablero instance = new Tablero();
         boolean expResult = true;
@@ -999,9 +997,9 @@ public class TableroTest
     @Test
     public void testInsertar_4args_L_2() throws Exception {
         System.out.println("insertar");
-        char dir = 'D';
+        char dir = Textos.DIAGONAL;
         int fila = 10;
-        char columna = 'J';
+        char columna = Textos.COLUMN10;
         Barco brc = new Barco(Textos.LANCHA, 1);
         Tablero instance = new Tablero();
         boolean expResult = true;
@@ -1016,9 +1014,9 @@ public class TableroTest
     public void testInsertar_4args_I()
     {
         System.out.println("insertar");
-        char dir = 'I';
+        char dir = Textos.INVERSEDIAGONAL;
         int fila = 1;
-        char columna = 'A';
+        char columna = Textos.COLUMN1;
         Barco brc = new Barco(Textos.PORTAAVIONES, Textos.PORTAAVIONESFIGURE.length());
         Tablero instance = new Tablero();
         boolean expResult = false;

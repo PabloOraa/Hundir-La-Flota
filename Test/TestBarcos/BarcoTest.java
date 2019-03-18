@@ -7,7 +7,7 @@ import Clases.Textos;
 
 /**
  * Clase TestBarcos que representa todos los test realizados a la clase Barcos
- * @Version 1.0.1
+ * @Version 1.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class BarcoTest
@@ -247,9 +247,7 @@ public class BarcoTest
         Barco brc = new Barco(Textos.PORTAAVIONES,Textos.PORTAAVIONESFIGURE.length());
         
         for (int i = 0; i < brc.getLength()-1; i++)
-        {
             brc.reducirVida();
-        }
         
         assertNotEquals(Textos.DEAD, brc.getState());
     }
