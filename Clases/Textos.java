@@ -1,8 +1,8 @@
-package Clases;
+﻿package Clases;
 
 /**
  * Textos de la aplicación
- * @Version 1.1
+ * @Version 1.2.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public interface Textos 
@@ -204,16 +204,16 @@ public interface Textos
     /**
      * Pide la fila al usuario.
      */
-    String ASKROW = "Introduce la fila entre 1 y 10 en la que vas a disparar.";
+    String ASKROW = "Introduce la fila entre 1 y 10";
     /**
      * Pide la columna al usuario.
      */
-    String ASKCOLUMN = "Introduce la columna entre A y J en la que vas a disparar.";
+    String ASKCOLUMN = "Introduce la columna entre A y J";
     /**
      * Pide la dirección en la que se introduce el barco.
      */
     String ASKDIR = "Introduce la dirección en la que se introduce el barco.\n"
-            + "Nota: D para Diagonal, I para Diagonal Inversa, H para Horizontal y V para vertical";
+            + "Nota: D para Diagonal (\\), I para Diagonal Inversa(/), H para Horizontal y V para vertical\n\tNOTA: Ten en cuenta que se insertan de arriba a abajo y de izquierda a derecha.";
     /**
      * El usuario ha introducido mal la fila o la columna.
      */

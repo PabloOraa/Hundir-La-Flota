@@ -1,4 +1,4 @@
-package Clases;
+﻿package Clases;
 
 import java.io.EOFException;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @Version 1.2
+ * @Version 1.2.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class App
@@ -84,7 +84,7 @@ public class App
         }
         else
         {   
-            //aplicacion.insertarBarcos(aplicacion.j1);
+            aplicacion.insertarBarcos(aplicacion.j1);
             aplicacion.insertarBarcos(aplicacion.j2, "src/Datos/posiciones.csv");
             aplicacion.j2.getTableroBarcos().imprimirTablero();
         }       
@@ -161,24 +161,25 @@ public class App
                 }
             }
             
-            if(turno.getNickname().equals(j1.getNickname()) && cambiarJugador)
-            {
-                turno = j2;
-                anterior = j1;
-            }
-            else if(salir)
-            {
-                if(resultado.equals(Textos.PLAYERDEAD))
-                {   
-                    System.out.println("El ganador es: " + turno.getNickname());
-                    borrarPartida();
-                }
-            }
-            else
-            {
-                turno = j1;
-                anterior = j2;
-            }
+            if(cambiarJugador)
+		if(turno.getNickname().equals(j1.getNickname()))
+            	{
+                	turno = j2;
+                	anterior = j1;
+            	}
+            	else if(salir)
+            	{
+                	if(resultado.equals(Textos.PLAYERDEAD))
+                	{   
+                    	System.out.println("El ganador es: " + turno.getNickname());
+                    	borrarPartida();
+                	}
+            	}
+            	else
+            	{
+                	turno = j1;
+                	anterior = j2;
+            	}
         }
     }
     

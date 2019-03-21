@@ -289,7 +289,6 @@ public class Tablero implements Serializable
     private boolean comprobarHorizontalTamanio(Barco brc, char columna)
     {
         int tamBarco = brc.getLength();
-        System.out.println(getCoord(Character.toUpperCase(columna)));
         //Se le resta 1 al tamaño del barco porque la casilla inicial cuenta
         return getCoord(Character.toUpperCase(columna)) >= 0 && getCoord(Character.toUpperCase(columna))+tamBarco-1 < tablero.length;
     }
