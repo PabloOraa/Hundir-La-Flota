@@ -1,4 +1,4 @@
-﻿package Clases;
+package los.barquito;
 
 import java.io.EOFException;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @Version 1.2.1
+ * @Version 1.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class App
@@ -167,19 +167,20 @@ public class App
                 	turno = j2;
                 	anterior = j1;
             	}
-            	else if(salir)
-            	{
-                	if(resultado.equals(Textos.PLAYERDEAD))
-                	{   
-                    	System.out.println("El ganador es: " + turno.getNickname());
-                    	borrarPartida();
-                	}
-            	}
             	else
             	{
                 	turno = j1;
                 	anterior = j2;
             	}
+            
+            if(salir)
+            {
+                if(resultado.equals(Textos.PLAYERDEAD))
+                {   
+                    System.out.println("El ganador es: " + turno.getNickname());
+                    borrarPartida();
+                }
+            }
         }
     }
     
@@ -287,7 +288,14 @@ public class App
     private int pedirFila()
     {
         System.out.println(Textos.ASKROW);
-        return Integer.parseInt(sc.nextLine());
+        try
+        {
+            return Integer.parseInt(sc.nextLine());
+        }catch(NumberFormatException ex)
+        {
+            System.err.println(ex.getMessage());
+        }
+        return -1;
     }
     
     /**

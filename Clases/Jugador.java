@@ -1,4 +1,4 @@
-package Clases;
+package los.barquito;
 
 import java.io.File;
 import java.io.Serializable;

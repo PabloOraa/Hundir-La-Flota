@@ -1,8 +1,8 @@
-﻿package Clases;
+package los.barquito;
 
 /**
  * Textos de la aplicación
- * @Version 1.2.1
+ * @Version 1.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public interface Textos 

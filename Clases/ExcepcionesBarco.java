@@ -1,4 +1,4 @@
-package Clases;
+package los.barquito;
 
 /**
  * Clase ExcepcionesBarcos para la creaciones de las excepciones pertinentes
