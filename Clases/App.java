@@ -73,6 +73,8 @@ public class App
             {        
                 aplicacion.cargarPartida();
                 System.out.println("Cargando");
+		aplicacion.j1.getTableroBarcos().imprimirTablero();
+		aplicacion.j2.getTableroBarcos().imprimirTablero();
             }
             else
             {   
