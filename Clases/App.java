@@ -1,4 +1,4 @@
-package los.barquito;
+package Clases;
 
 import java.io.EOFException;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * @Version 1.2
+ * @Version 1.2.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class App

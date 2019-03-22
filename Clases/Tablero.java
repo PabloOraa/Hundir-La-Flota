@@ -1,4 +1,4 @@
-package los.barquito;
+package Clases;
 
 import com.csvreader.CsvReader;
 import java.io.File;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
- * @Version 1.2
+ * @Version 1.2.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Tablero implements Serializable

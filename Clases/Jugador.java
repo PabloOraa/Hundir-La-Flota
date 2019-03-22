@@ -1,4 +1,4 @@
-package los.barquito;
+package Clases;
 
 import java.io.File;
 import java.io.Serializable;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  * Clase Jugador que representa a cada uno de los miembros de la partida
- * @Version 1.2
+ * @Version 1.2.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Jugador implements Serializable

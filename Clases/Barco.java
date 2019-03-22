@@ -1,11 +1,11 @@
-package los.barquito;
+package Clases;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Clase Barcos que representa los barcos usados por los jugadores
- * @Version 1.0.1
+ * @Version 1.2.2
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Barco implements Serializable
