@@ -219,6 +219,10 @@ public interface Textos
      */
     String NOTVALIDFIELDS = "La fila o la columna no son validas.";
     /**
+     * El usuario ha introducido mal la direccion a insertar el barco.
+     */
+    String NOTVALIDDIR= "La direccion de insercion indicada no es valida.";
+    /**
      * Cadena de texto para indicar que se ha encontrado una partida guardada.
      */
     String SAVEFILEFOUND = "Se ha encontrado una partida guardada ";

@@ -328,6 +328,17 @@ public class App
         return j1.getTableroBarcos().getCoord(Character.toUpperCase(columna)) < 10 
                 && j1.getTableroBarcos().getCoord(Character.toUpperCase(columna)) >-1;
     }
+    /**
+     * Comprueba que la direccion introducida es V,H,D o I.
+     * @param columna Columna introducida por el usuario.
+     * @return True si es valido y False si no.
+     */
+     private boolean comprobarDireccion(char direccion)
+     {
+         return (direccion == Textos.HORIZONTAL && direccion == Textos.VERTICAL
+                 && direccion == Textos.DIAGONAL && direccion == Textos.INVERSEDIAGONAL);
+     }
+
 
     /**
      * Genera un numero entre 1 y 10 para representar la fila a disparar.
@@ -402,16 +413,19 @@ public class App
                 fila = pedirFila();
                 columna = pedirColumna();
                 
-                if(comprobarFila(fila) && comprobarColumna(columna))
-                {
-                    if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(i)))
-                    {
-                        j1.getTableroBarcos().imprimirTablero();
-                        i++;
-                    }
-                }
-                else
-                    System.err.println(Textos.NOTVALIDFIELDS); 
+                if(comprobarDireccion(dir))
+			if(comprobarFila(fila) && comprobarColumna(columna))
+                	{
+                    		if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(i)))
+                    		{
+                        		j1.getTableroBarcos().imprimirTablero();
+                        		i++;
+                    		}
+                	}
+                	else
+                    		System.err.println(Textos.NOTVALIDFIELDS);
+		else
+			System.err.println(Textos.NOTVALIDDIR); 
             } catch (ExcepcionesBarco | NumberFormatException ex)
             {
                 System.err.println(ex.getMessage());
