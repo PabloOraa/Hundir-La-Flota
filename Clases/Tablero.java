@@ -1,10 +1,12 @@
 package Clases;
 
 import com.csvreader.CsvReader;
+import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import javax.swing.JTextArea;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
@@ -457,34 +459,40 @@ public class Tablero implements Serializable
     {
         tablero[fila][columna] = res;
     }
-    
+
     /**
      * Imprime el tablero tal cual se encuente en ese momento
+     * @param jta JTextArea que incluirá el tablero
+     * @return Cadena con el tablero
      */
-    public void imprimirTablero()
+    public JTextArea imprimirTableroInterfaz(JTextArea jta)
     {
-        System.out.println(Textos.LINE);
+        jta.setText("");
         for (char[] tablero1 : tablero)
         {
-            for (int i = 0; i < tablero1.length; i++){
+            for (int i = 0; i < tablero1.length; i++)
                 switch (tablero1[i])
                 {
                     case Textos.EMPTY:
-                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.BLUE+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        jta.setForeground(Color.BLACK);
+                        jta.append(String.valueOf(Textos.VERTICALBAR));
+                        jta.setForeground(Color.BLUE);
+                        jta.append(String.valueOf(tablero1[i])); 
+                        jta.setForeground(Color.BLACK);
+                        jta.append(String.valueOf(Textos.VERTICALBAR)+ " ");
                         break;
                     case Textos.FAILLETTER:
-                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        System.out.println(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
                         break;
                     case Textos.RIGHTLETTER:
-                        System.out.print(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        System.out.println(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
                         break;
                     default:
-                        System.out.print(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
+                        System.out.println(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
                         break;
                 }
-            }
-            System.out.print("\n");
+            jta.append("\n");
         }
-        System.out.println(Textos.LINE);
+        return jta;
     }
 }
