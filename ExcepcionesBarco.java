@@ -2,7 +2,7 @@ package Clases;
 
 /**
  * Clase ExcepcionesBarcos para la creaciones de las excepciones pertinentes
- * @Version 1.2.2
+ * @Version 1.4
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class ExcepcionesBarco extends Exception

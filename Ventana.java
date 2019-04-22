@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Clases;
 
 import java.awt.event.MouseAdapter;
@@ -22,8 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SpinnerListModel;
 
 /**
- *
- * @author pabli
+ * Ventana de la aplicación
+ * @version 1.4
+ * @author Pablo Oraa Lopez
  */
 public class Ventana extends javax.swing.JFrame
 {
@@ -392,7 +388,10 @@ public class Ventana extends javax.swing.JFrame
     private javax.swing.JLabel etiquetaBarcos;
     private javax.swing.JLabel etiquetaResultados;
     // End of variables declaration//GEN-END:variables
-    private String cadenaEstado = "Insertar";
+    /**
+     * Cadena que marca el estado del juego en función de Insertar Barco o disparar
+     */
+    private String cadenaEstado = Textos.ADDSHIP;
     /**
      * Clase Scanner para la entrada por teclado del usuario.
      */
@@ -411,11 +410,18 @@ public class Ventana extends javax.swing.JFrame
      */
     private final String path;
     
+    /**
+     * Devuelve el estado del programa
+     * @return Cadena ADDSHIP o SHOOT en función del punto en el que esté el juego
+     */
     public String getEstado()
     {
         return cadenaEstado;
     }
     
+    /**
+     * Cambia el estado de ADDSHIP a SHOOT
+     */
     private void setEstado()
     {
         cadenaEstado = Textos.SHOOT;

@@ -3,12 +3,10 @@ package Clases;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
-import javax.swing.JFrame;
-import javax.swing.JTextArea;
 
 /**
  * Clase Jugador que representa a cada uno de los miembros de la partida
- * @Version 1.2.2
+ * @Version 1.4
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Jugador implements Serializable
@@ -255,16 +253,4 @@ public class Jugador implements Serializable
     {
         tableroResultados.insertarResultado(fila, columna, res);
     }
-    
-//    /**
-//     * Imprime los dos tableros del jugador, primero el de los disparos que ha 
-//     * realizado y luego el de los resultados.
-//     */
-//    public void imprimirTableros()
-//    {
-//        System.out.println("Disparos");
-//        tableroResultados.imprimirTablero();
-//        System.out.println("Barcos");
-//        tableroBarcos.imprimirTablero();
-//    }
 }
