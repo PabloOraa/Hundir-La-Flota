@@ -238,4 +238,12 @@ public interface Textos
      * Formato de la fecha al preguntar al usuario si quiere cargarla.
      */
     String FORMAT = "'el' dd/MM/yyyy 'a las' kk:mm:ss";
+    /**
+     * Cadena de texto que indica que el usuario puede disparar
+     */
+    String SHOOT = "Disparar";
+    /**
+     * Cadena de texto que indica que el usuario inserta un barco
+     */
+    String ADDSHIP = "Insertar barco";
 }

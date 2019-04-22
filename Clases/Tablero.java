@@ -7,6 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
@@ -462,37 +467,61 @@ public class Tablero implements Serializable
 
     /**
      * Imprime el tablero tal cual se encuente en ese momento
-     * @param jta JTextArea que incluirá el tablero
+     * @param jtp JTextPane que incluirá el tablero
      * @return Cadena con el tablero
      */
-    public JTextArea imprimirTableroInterfaz(JTextArea jta)
+    public JTextPane imprimirTableroInterfaz(JTextPane jtp)
     {
-        jta.setText("");
+        jtp.setText("");
         for (char[] tablero1 : tablero)
         {
             for (int i = 0; i < tablero1.length; i++)
                 switch (tablero1[i])
                 {
                     case Textos.EMPTY:
-                        jta.setForeground(Color.BLACK);
-                        jta.append(String.valueOf(Textos.VERTICALBAR));
-                        jta.setForeground(Color.BLUE);
-                        jta.append(String.valueOf(tablero1[i])); 
-                        jta.setForeground(Color.BLACK);
-                        jta.append(String.valueOf(Textos.VERTICALBAR)+ " ");
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
+                        appendToPane(jtp,String.valueOf(tablero1[i]), Color.BLUE);
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
                         break;
                     case Textos.FAILLETTER:
-                        System.out.println(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.RED+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
+                        appendToPane(jtp,String.valueOf(tablero1[i]), Color.RED);
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
                         break;
                     case Textos.RIGHTLETTER:
-                        System.out.println(Textos.BLACK+Textos.VERTICALBAR + "" + Textos.GREEN+tablero1[i] + "" + Textos.BLACK+Textos.VERTICALBAR);
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
+                        appendToPane(jtp,String.valueOf(tablero1[i]), Color.GREEN);
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
                         break;
                     default:
-                        System.out.println(Textos.VERTICALBAR + "" + Textos.BLACK+tablero1[i] + "" + Textos.VERTICALBAR);
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
+                        appendToPane(jtp,String.valueOf(tablero1[i]), Color.BLACK);
+                        appendToPane(jtp,String.valueOf(Textos.VERTICALBAR), Color.BLACK);
                         break;
                 }
-            jta.append("\n");
+            appendToPane(jtp,"\n", Color.BLACK);
         }
-        return jta;
+        return jtp;
+    }
+    
+    /**
+     * Método para introducir en el JTextPane un texto o caracter en un color determinado.
+     * Realiza un append al rext que ya hubiese en el JTextPane.
+     * @param tp JTextPane donde se introduce el text
+     * @param msg Cadena a introducir en el JTextPane
+     * @param c Color en el que se introduce el texto
+     */
+    private void appendToPane(JTextPane tp, String msg, Color c)
+    {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        int len = tp.getDocument().getLength();
+        tp.setCaretPosition(len);
+        tp.setCharacterAttributes(aset, false);
+        tp.replaceSelection(msg);
     }
 }

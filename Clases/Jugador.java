@@ -79,7 +79,7 @@ public class Jugador implements Serializable
      * en la partida.
      * @return Tablero con los disparos del usuario.
      */
-    public Tablero getTabletoResultados()
+    public Tablero getTableroResultados()
     {
         return tableroResultados;
     }

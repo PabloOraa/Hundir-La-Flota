@@ -18,8 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerListModel;
 
@@ -65,6 +63,74 @@ public class Ventana extends javax.swing.JFrame
                 save();
             }                
         }); 
+        InsertarDisparar.addMouseListener(new MouseAdapter()
+                {
+                    @Override
+                    public void mouseClicked(MouseEvent e) 
+                    {
+                        int fila = (Integer) EleccionFila.getValue();
+                        String col = (String)EleccionColumna.getValue();
+                        char columna = col.charAt(0);
+                        if(InsertarDisparar.getText().equals(Textos.SHOOT))
+                        {
+                            try
+                            {
+                                String res = j1.Disparar(j2, fila, columna);
+                                if(res.equals(Textos.PLAYERDEAD))
+                                {
+                                    JOptionPane.showMessageDialog(null, "Enhorabuena " + j1.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
+                                    Guardar.setEnabled(false);
+                                    InsertarDisparar.setEnabled(false);
+                                    Cancelar.setEnabled(false);
+                                }   
+                                else
+                                {
+                                    JOptionPane.showMessageDialog(null, res, "Resultado del disparo",JOptionPane.INFORMATION_MESSAGE);
+                                    fila = generarFila();
+                                    columna = generarColumna();
+                                    boolean salir = false;
+                                    try
+                                    {
+                                        j2.Disparar(j1, fila, columna);
+                                        if(res.equals(Textos.PLAYERDEAD))
+                                        {
+                                            JOptionPane.showMessageDialog(null, "Enhorabuena " + j1.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
+                                            Guardar.setEnabled(false);
+                                            InsertarDisparar.setEnabled(false);
+                                            Cancelar.setEnabled(false);
+                                        } 
+                                    }catch(ExcepcionesBarco ex)
+                                    {
+                                        while(!salir)
+                                        {
+                                            fila = generarFila();
+                                            columna = generarColumna();
+                                            try
+                                            {
+                                                j2.Disparar(j1, fila, columna);
+                                                if(res.equals(Textos.PLAYERDEAD))
+                                                {
+                                                    JOptionPane.showMessageDialog(null, "Enhorabuena " + j1.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
+                                                    Guardar.setEnabled(false);
+                                                    InsertarDisparar.setEnabled(false);
+                                                    Cancelar.setEnabled(false);
+                                                } 
+                                                salir = true;
+                                            }catch(ExcepcionesBarco error)
+                                            {
+                                            }
+                                        }
+                                    }
+                                }
+                                imprimirTableros(j1);
+                            } catch (ExcepcionesBarco ex)
+                            {
+                                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                        
+                    }  
+                });
     }
 
     /**
@@ -77,8 +143,6 @@ public class Ventana extends javax.swing.JFrame
     private void initComponents()
     {
 
-        Barcos = new javax.swing.JTextArea();
-        Resultados = new javax.swing.JTextArea();
         etiquetaBarcos = new javax.swing.JLabel();
         etiquetaResultados = new javax.swing.JLabel();
         Fila = new javax.swing.JLabel();
@@ -89,6 +153,8 @@ public class Ventana extends javax.swing.JFrame
         Cancelar = new javax.swing.JButton();
         Turno = new javax.swing.JLabel();
         Guardar = new javax.swing.JButton();
+        Barcos = new javax.swing.JTextPane();
+        Resultados = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hundir la Flota");
@@ -97,18 +163,6 @@ public class Ventana extends javax.swing.JFrame
         setMinimumSize(new java.awt.Dimension(650, 400));
         setPreferredSize(new java.awt.Dimension(650, 400));
         setResizable(false);
-
-        Barcos.setEditable(false);
-        Barcos.setColumns(20);
-        Barcos.setRows(5);
-        Barcos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        Barcos.setName("Barcos"); // NOI18N
-
-        Resultados.setEditable(false);
-        Resultados.setColumns(20);
-        Resultados.setRows(5);
-        Resultados.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        Resultados.setName("Resultados"); // NOI18N
 
         etiquetaBarcos.setText(Barcos.getName());
 
@@ -136,6 +190,14 @@ public class Ventana extends javax.swing.JFrame
 
         Guardar.setText("Guardar");
 
+        Barcos.setEditable(false);
+        Barcos.setBackground(new java.awt.Color(240, 240, 240));
+        Barcos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        Resultados.setEditable(false);
+        Resultados.setBackground(new java.awt.Color(240, 240, 240));
+        Resultados.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,14 +208,15 @@ public class Ventana extends javax.swing.JFrame
                     .addComponent(Turno, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Barcos, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(etiquetaBarcos))
+                            .addComponent(etiquetaBarcos)
+                            .addComponent(Barcos, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etiquetaResultados)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(2, 2, 2)
                                 .addComponent(Resultados, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -179,7 +242,7 @@ public class Ventana extends javax.swing.JFrame
                     .addComponent(etiquetaBarcos))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Fila)
                             .addComponent(EleccionFila, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -196,10 +259,10 @@ public class Ventana extends javax.swing.JFrame
                         .addGap(51, 51, 51))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Barcos, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Resultados, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Resultados, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                            .addComponent(Barcos))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -294,11 +357,11 @@ public class Ventana extends javax.swing.JFrame
         }
         aplicacion.imprimirTableros(aplicacion.j1);
         aplicacion.setEstado();
-        aplicacion.jugar();
+        //aplicacion.jugar();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea Barcos;
+    private javax.swing.JTextPane Barcos;
     private javax.swing.JButton Cancelar;
     private javax.swing.JLabel Columna;
     private javax.swing.JSpinner EleccionColumna;
@@ -306,7 +369,7 @@ public class Ventana extends javax.swing.JFrame
     private javax.swing.JLabel Fila;
     private javax.swing.JButton Guardar;
     private javax.swing.JButton InsertarDisparar;
-    private javax.swing.JTextArea Resultados;
+    private javax.swing.JTextPane Resultados;
     private javax.swing.JLabel Turno;
     private javax.swing.JLabel etiquetaBarcos;
     private javax.swing.JLabel etiquetaResultados;
@@ -337,59 +400,8 @@ public class Ventana extends javax.swing.JFrame
     
     private void setEstado()
     {
-        cadenaEstado = "Atacar";
-    }
-    
-    /**
-     * Muestra las opciones disponibles al usuario disponibles en el juego y es
-     * el método principal para jugar.
-     */
-    public void jugar()
-    {
-        Jugador turno = j1;
-        Jugador anterior = j2;
-        boolean salir = false;
-        String resultado = "";
-            
-        boolean cambiarJugador = false;
-        if(turno.equals(j1))
-        {    
-                
-        }
-        else
-        {
-            try
-            {
-                resultado = disparar(turno, anterior);
-                System.out.println(resultado);
-                if(resultado.equals(Textos.PLAYERDEAD))
-                    salir = true;
-                else if(!resultado.equals(""))
-                    cambiarJugador = true;
-            } catch (ExcepcionesBarco ex)
-            {
-                Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-            
-        if(cambiarJugador)
-            if(turno.getNickname().equals(j1.getNickname()))
-            {
-               	turno = j2;
-               	anterior = j1;
-            }
-            else
-            {
-               	turno = j1;
-               	anterior = j2;
-           }
-            
-        if(salir)
-            if(resultado.equals(Textos.PLAYERDEAD))
-            {   
-                System.out.println("El ganador es: " + turno.getNickname());
-                borrarPartida();
-            }
+        cadenaEstado = Textos.SHOOT;
+        InsertarDisparar.setText(cadenaEstado);
     }
     
     /**
@@ -398,8 +410,12 @@ public class Ventana extends javax.swing.JFrame
      */
     public void imprimirTableros(Jugador j1) 
     {
-        j1.getTableroBarcos().imprimirTableroInterfaz(Barcos);
-        j1.getTableroBarcos().imprimirTableroInterfaz(Resultados);
+        Barcos.setEditable(true);
+        this.Barcos = j1.getTableroBarcos().imprimirTableroInterfaz(Barcos);
+        Barcos.setEditable(false);
+        Resultados.setEditable(true);
+        this.Resultados = j1.getTableroResultados().imprimirTableroInterfaz(Resultados);
+        Resultados.setEditable(false);
     }
 
     /**
@@ -455,39 +471,6 @@ public class Ventana extends javax.swing.JFrame
         File arch = new File(path);
         if(arch.exists())
             arch.delete();
-    }
-
-    /**
-     * Metodo llamado cuando el jugador quiere disparar. Si es el jugador, se le
-     * pide una fila y una columna que se comprueban como validos.
-     * Si es el PC, se genera aleatoriamente entre los valores permitidos.
-     * @param turno Jugador con el turno actual
-     * @param anterior Otro jugador de la partida
-     * @return Devuelve el restulado del disparo y en blanco si los valores son 
-     * incorrectos.
-     * @throws ExcepcionesBarco
-     */
-    private String disparar(Jugador turno, Jugador anterior) throws ExcepcionesBarco
-    {
-        int fila;
-        char columna;
-        if(turno.equals(j1))
-        {    
-            fila = pedirFila();
-            columna = pedirColumna();
-        }
-        else 
-        {
-            fila = generarFila();
-            columna = generarColumna();
-        }
-        
-        if(comprobarFila(fila) && comprobarColumna(columna))
-            return turno.Disparar(anterior, fila, columna);
-        else
-            System.err.println(Textos.NOTVALIDFIELDS);
-        
-        return "";
     }
     
     /**
