@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Clases;
 
 import java.awt.event.MouseAdapter;
@@ -22,8 +17,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SpinnerListModel;
 
 /**
- *
- * @author pabli
+ * Ventana de la aplicación
+ * @version 1.4.1
+ * @author Pablo Oraa Lopez
  */
 public class Ventana extends javax.swing.JFrame
 {
@@ -42,6 +38,10 @@ public class Ventana extends javax.swing.JFrame
         asignarBotones();
     }
     
+    /**
+     * Los botones del programa de cancelar guardar y disparar/insertar reciben
+     * una función en función del botón que sea para hacer la acción marcada.
+     */
     private void asignarBotones()
     {
         Cancelar.addMouseListener(new MouseAdapter()
@@ -63,76 +63,86 @@ public class Ventana extends javax.swing.JFrame
                 save();
             }                
         }); 
+        
         InsertarDisparar.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                int fila = (Integer) EleccionFila.getValue();
+                String col = (String)EleccionColumna.getValue();
+                char columna = col.charAt(0);
+                if(InsertarDisparar.getText().equals(Textos.SHOOT))
+                    disparar(fila,columna);
+                else
+                    insertarBarcos(fila,columna);
+            }  
+        });
+    }
+    
+    /**
+     * Dispara en la posición indicada por fila y columna y realiza lo propio con el NPC
+     * @param fila Número que indica la Fila elegida por el usuario
+     * @param columna Carcater que indica la Columna elegida por el usuario
+     */
+    private void disparar(int fila, char columna)
+    {
+        try
+        {
+            String res = j1.Disparar(j2, fila, columna);
+            String resultadoDisparocpu = "";
+            if(res.equals(Textos.PLAYERDEAD))
+                mostrarGanador(j1); 
+            else
+            {
+                fila = generarFila();
+                columna = generarColumna();
+                boolean salir = false;
+                try
                 {
-                    @Override
-                    public void mouseClicked(MouseEvent e) 
+                    resultadoDisparocpu = j2.Disparar(j1, fila, columna);
+                    if(res.equals(Textos.PLAYERDEAD))
+                        mostrarGanador(j2);
+                }catch(ExcepcionesBarco ex)
+                {
+                    while(!salir)
                     {
-                        int fila = (Integer) EleccionFila.getValue();
-                        String col = (String)EleccionColumna.getValue();
-                        char columna = col.charAt(0);
-                        if(InsertarDisparar.getText().equals(Textos.SHOOT))
+                        fila = generarFila();
+                        columna = generarColumna();
+                        try
                         {
-                            try
-                            {
-                                String res = j1.Disparar(j2, fila, columna);
-                                if(res.equals(Textos.PLAYERDEAD))
-                                {
-                                    JOptionPane.showMessageDialog(null, "Enhorabuena " + j1.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
-                                    Guardar.setEnabled(false);
-                                    InsertarDisparar.setEnabled(false);
-                                    Cancelar.setEnabled(false);
-                                }   
-                                else
-                                {
-                                    JOptionPane.showMessageDialog(null, res, "Resultado del disparo",JOptionPane.INFORMATION_MESSAGE);
-                                    fila = generarFila();
-                                    columna = generarColumna();
-                                    boolean salir = false;
-                                    try
-                                    {
-                                        j2.Disparar(j1, fila, columna);
-                                        if(res.equals(Textos.PLAYERDEAD))
-                                        {
-                                            JOptionPane.showMessageDialog(null, "Enhorabuena " + j1.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
-                                            Guardar.setEnabled(false);
-                                            InsertarDisparar.setEnabled(false);
-                                            Cancelar.setEnabled(false);
-                                        } 
-                                    }catch(ExcepcionesBarco ex)
-                                    {
-                                        while(!salir)
-                                        {
-                                            fila = generarFila();
-                                            columna = generarColumna();
-                                            try
-                                            {
-                                                j2.Disparar(j1, fila, columna);
-                                                if(res.equals(Textos.PLAYERDEAD))
-                                                {
-                                                    JOptionPane.showMessageDialog(null, "Enhorabuena " + j1.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
-                                                    Guardar.setEnabled(false);
-                                                    InsertarDisparar.setEnabled(false);
-                                                    Cancelar.setEnabled(false);
-                                                } 
-                                                salir = true;
-                                            }catch(ExcepcionesBarco error)
-                                            {
-                                            }
-                                        }
-                                    }
-                                }
-                                imprimirTableros(j1);
-                            } catch (ExcepcionesBarco ex)
-                            {
-                                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                            }
+                            resultadoDisparocpu = j2.Disparar(j1, fila, columna);
+                            if(res.equals(Textos.PLAYERDEAD))
+                                mostrarGanador(j2);
+                            salir = true;
+                        }catch(ExcepcionesBarco error)
+                        {
                         }
-                        
-                    }  
-                });
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(null, j1.getNickname() + ": "+ res + "\n" + j2.getNickname() + ": " + resultadoDisparocpu, "Resultado del disparo",JOptionPane.INFORMATION_MESSAGE);
+            imprimirTableros(j1);
+        } catch (ExcepcionesBarco ex)
+        {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
+    /**
+     * Muestra un mensaje felicitando al ganador de la partida
+     * @param player Jugador que ha ganado
+     */
+    private void mostrarGanador(Jugador player)
+    {
+        JOptionPane.showMessageDialog(null, "Enhorabuena " + player.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
+        if(this.buscarPartida())
+            this.borrarPartida();
+        Guardar.setEnabled(false);
+        InsertarDisparar.setEnabled(false);
+        Cancelar.setEnabled(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -193,10 +203,18 @@ public class Ventana extends javax.swing.JFrame
         Barcos.setEditable(false);
         Barcos.setBackground(new java.awt.Color(240, 240, 240));
         Barcos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Barcos.setAutoscrolls(false);
+        Barcos.setMaximumSize(new java.awt.Dimension(248, 250));
+        Barcos.setMinimumSize(new java.awt.Dimension(248, 250));
+        Barcos.setPreferredSize(new java.awt.Dimension(248, 250));
 
         Resultados.setEditable(false);
         Resultados.setBackground(new java.awt.Color(240, 240, 240));
         Resultados.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Resultados.setAutoscrolls(false);
+        Resultados.setMaximumSize(new java.awt.Dimension(248, 250));
+        Resultados.setMinimumSize(new java.awt.Dimension(248, 250));
+        Resultados.setPreferredSize(new java.awt.Dimension(248, 250));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -209,7 +227,7 @@ public class Ventana extends javax.swing.JFrame
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etiquetaBarcos)
-                            .addComponent(Barcos, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Barcos, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etiquetaResultados)
@@ -260,8 +278,8 @@ public class Ventana extends javax.swing.JFrame
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Resultados, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
-                            .addComponent(Barcos))
+                            .addComponent(Resultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Barcos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -304,62 +322,58 @@ public class Ventana extends javax.swing.JFrame
         //</editor-fold>
         
         String nickname = (String)JOptionPane.showInputDialog(null, Textos.WELCOMETEXT + "\n" + Textos.ASKNICKNAME, "Nombre de Usuario", JOptionPane.QUESTION_MESSAGE, null, null, null);
-        Jugador jtemp = new Jugador(nickname);
-             
-        Ventana aplicacion = new Ventana(jtemp); 
+        try
+        {    
+            if(!nickname.isEmpty())
+            {    
+                Jugador jtemp = new Jugador(nickname);            
+                Ventana aplicacion = new Ventana(jtemp); 
         
-        if(aplicacion.buscarPartida())
-        {
-            SimpleDateFormat sdf = new SimpleDateFormat(Textos.FORMAT);
-            int opt = JOptionPane.showOptionDialog(null, Textos.SAVEFILEFOUND + sdf.format(new Date(new File(aplicacion.path).lastModified())) + Textos.ASKLOAD
-                    , "Cargar Partida", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-            if(opt == JOptionPane.YES_OPTION)
-            {        
-                aplicacion.cargarPartida();
-                
-                /* Create and display the form */
-                java.awt.EventQueue.invokeLater(new Runnable()
-                {   
-                    public void run()
-                    {
-                        aplicacion.setVisible(true);
-                    }
-                });
-            }
-            else
-            {   
-                /* Create and display the form */
-                java.awt.EventQueue.invokeLater(new Runnable()
+                if(aplicacion.buscarPartida())
                 {
-                    public void run()
-                    {
-                        aplicacion.setVisible(true);
-                    }
-                });
-                
-                aplicacion.borrarPartida();
-                aplicacion.insertarBarcos(aplicacion.j1);
-                aplicacion.insertarBarcos(aplicacion.j2, "src/Datos/posiciones.csv");
-            }
-        }
-        else
-        {
-            /* Create and display the form */
-            java.awt.EventQueue.invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    aplicacion.setVisible(true);
+                    SimpleDateFormat sdf = new SimpleDateFormat(Textos.FORMAT);
+                    int opt = JOptionPane.showOptionDialog(null, Textos.SAVEFILEFOUND + sdf.format(new Date(new File(aplicacion.path).lastModified())) + Textos.ASKLOAD
+                            , "Cargar Partida", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                    if(opt == JOptionPane.YES_OPTION)   
+                        aplicacion.quiereCargar(aplicacion);
+                    else
+                        aplicacion.empezarNuevo(aplicacion);
                 }
-            });
-            //aplicacion.insertarBarcos(aplicacion.j1);
-            aplicacion.insertarBarcos(aplicacion.j2, "src/Datos/posiciones.csv");
+                else
+                    aplicacion.empezarNuevo(aplicacion);
+                
+                aplicacion.imprimirTableros(aplicacion.j1);
+            }
+        }catch(NullPointerException ex)
+        {
+            
         }
-        aplicacion.imprimirTableros(aplicacion.j1);
-        aplicacion.setEstado();
-        //aplicacion.jugar();
     }
-
+    
+    public void quiereCargar(Ventana vtn)
+    {
+        this.cargarPartida();
+        if(this.j1.getContador() == 4)
+            this.setEstado();
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() ->
+        {
+            vtn.setVisible(true);
+        });
+    }
+    
+    public void empezarNuevo(Ventana vtn)
+    {
+        if(buscarPartida())
+            this.borrarPartida();
+        this.insertarBarcos(this.j2, "src/Datos/posiciones.csv"); 
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() ->
+        {
+            vtn.setVisible(true);
+        });      
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane Barcos;
     private javax.swing.JButton Cancelar;
@@ -374,7 +388,10 @@ public class Ventana extends javax.swing.JFrame
     private javax.swing.JLabel etiquetaBarcos;
     private javax.swing.JLabel etiquetaResultados;
     // End of variables declaration//GEN-END:variables
-    private String cadenaEstado = "Insertar";
+    /**
+     * Cadena que marca el estado del juego en función de Insertar Barco o disparar
+     */
+    private String cadenaEstado = Textos.ADDSHIP;
     /**
      * Clase Scanner para la entrada por teclado del usuario.
      */
@@ -393,11 +410,18 @@ public class Ventana extends javax.swing.JFrame
      */
     private final String path;
     
+    /**
+     * Devuelve el estado del programa
+     * @return Cadena ADDSHIP o SHOOT en función del punto en el que esté el juego
+     */
     public String getEstado()
     {
         return cadenaEstado;
     }
     
+    /**
+     * Cambia el estado de ADDSHIP a SHOOT
+     */
     private void setEstado()
     {
         cadenaEstado = Textos.SHOOT;
@@ -474,63 +498,15 @@ public class Ventana extends javax.swing.JFrame
     }
     
     /**
-     * Pide una fila al usuario que introducirá por teclado
-     * @return Número introducido por teclado.
-     */
-    private int pedirFila()
-    {
-        System.out.println(Textos.ASKROW);
-        try
-        {
-            return Integer.parseInt(sc.nextLine());
-        }catch(NumberFormatException ex)
-        {
-            System.err.println(ex.getMessage());
-        }
-        return -1;
-    }
-    
-    /**
-     * Pide la columna al usuario para que la introduzca por teclado.
-     * @return Caracter que indica la columna.
-     */
-    private char pedirColumna()
-    {
-        System.out.println(Textos.ASKCOLUMN);
-        return sc.nextLine().charAt(0);
-    }
-    
-    /**
-     * Comprueba que la fila introducida esté entre 1 y 10.
-     * @param fila Fila introducida por el usuario.
-     * @return True si es valido y False si no.
-     */
-    private boolean comprobarFila(int fila)
-    {
-        return fila < 11 && fila > 0;
-    }
-    
-    /**
-     * Comprueba que la columna introducida esté entre A y J.
-     * @param columna Columna introducida por el usuario.
-     * @return True si es valido y False si no.
-     */
-    private boolean comprobarColumna(char columna)
-    {
-        return j1.getTableroBarcos().getCoord(Character.toUpperCase(columna)) < 10 
-                && j1.getTableroBarcos().getCoord(Character.toUpperCase(columna)) >-1;
-    }
-    /**
      * Comprueba que la direccion introducida es V,H,D o I.
      * @param columna Columna introducida por el usuario.
      * @return True si es valido y False si no.
      */
      private boolean comprobarDireccion(char direccion)
      {
-         return (direccion == Textos.HORIZONTAL && direccion == Textos.VERTICAL
-                 && direccion == Textos.DIAGONAL && direccion == Textos.INVERSEDIAGONAL);
+         return (direccion == Textos.HORIZONTAL || direccion == Textos.VERTICAL
+                 || direccion == Textos.DIAGONAL || direccion == Textos.INVERSEDIAGONAL);
      }
-
 
     /**
      * Genera un numero entre 1 y 10 para representar la fila a disparar.
@@ -590,38 +566,29 @@ public class Ventana extends javax.swing.JFrame
      * @param j1 Jugador en el que se van a introducir los barcos según indique 
      * el usuario
      */
-    private void insertarBarcos(Jugador j1)
+    private void insertarBarcos(int fila, char columna)
     {
         System.out.println("Insertando barcos del jugador " + j1.getNickname());
-        char dir, columna;
-        int fila;
-        for(int i = 0; i < j1.getListaBarcos().size();)
+        try
         {
-            try
-            {
-                System.out.println("Se va a introducir el: " + j1.getListaBarcos().get(i).getName());
-                System.out.println(Textos.ASKDIR);
-                dir = sc.nextLine().charAt(0);
-                fila = pedirFila();
-                columna = pedirColumna();
-                
-                if(comprobarDireccion(dir))
-			if(comprobarFila(fila) && comprobarColumna(columna))
-                	{
-                    		if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(i)))
-                    		{
-//                        		j1.getTableroBarcos().imprimirTablero();
-                        		i++;
-                    		}
-                	}
-                	else
-                    		System.err.println(Textos.NOTVALIDFIELDS);
-		else
-			System.err.println(Textos.NOTVALIDDIR); 
-            } catch (ExcepcionesBarco | NumberFormatException ex)
-            {
-                System.err.println(ex.getMessage());
-            }
+            char dir = ((String)JOptionPane.showInputDialog(null, "¿En que dirección quieres que se introduzca el barco?", "Dirección", JOptionPane.QUESTION_MESSAGE)).charAt(0);
+            if(comprobarDireccion(dir))
+                if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(j1.getContador())))
+                {
+                    Barcos.setEditable(true);
+                    this.Barcos = j1.getTableroBarcos().imprimirTableroInterfaz(Barcos);
+                    Barcos.setEditable(false);
+                    j1.sumContador();
+                    if(j1.getContador() == 4)
+                       this.setEstado(); 
+                }
+                else
+                    JOptionPane.showMessageDialog(null, Textos.NOTVALIDFIELDS, "Error", JOptionPane.ERROR_MESSAGE);
+	    else
+		JOptionPane.showMessageDialog(null, Textos.NOTVALIDDIR, "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ExcepcionesBarco ex)
+        {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     

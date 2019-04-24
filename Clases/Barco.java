@@ -5,7 +5,7 @@ import java.util.Objects;
 
 /**
  * Clase Barcos que representa los barcos usados por los jugadores
- * @Version 1.2.2
+ * @Version 1.4.1
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Barco implements Serializable
