@@ -86,6 +86,7 @@ public class Ventana extends javax.swing.JFrame
             {
                 insertarBarcosAleatorio(j1); 
                 Aleatorio.setVisible(false);
+                setEstado();
             }
         });
     }
@@ -679,7 +680,6 @@ public class Ventana extends javax.swing.JFrame
                 
             }
         }
-        setEstado();
     }
     
     /**
