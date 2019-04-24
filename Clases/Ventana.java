@@ -78,6 +78,16 @@ public class Ventana extends javax.swing.JFrame
                     insertarBarcos(fila,columna);
             }  
         });
+        
+        Aleatorio.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                insertarBarcosAleatorio(j1); 
+                Aleatorio.setVisible(false);
+            }
+        });
     }
     
     /**
@@ -150,8 +160,7 @@ public class Ventana extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         etiquetaBarcos = new javax.swing.JLabel();
         etiquetaResultados = new javax.swing.JLabel();
@@ -165,13 +174,12 @@ public class Ventana extends javax.swing.JFrame
         Guardar = new javax.swing.JButton();
         Barcos = new javax.swing.JTextPane();
         Resultados = new javax.swing.JTextPane();
+        Aleatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hundir la Flota");
         setLocation((getToolkit().getScreenSize().width/2)-(getWidth()/2),(getToolkit().getScreenSize().height/2)-(getHeight()/2));
-        setMaximumSize(new java.awt.Dimension(650, 400));
         setMinimumSize(new java.awt.Dimension(650, 400));
-        setPreferredSize(new java.awt.Dimension(650, 400));
         setResizable(false);
 
         etiquetaBarcos.setText(Barcos.getName());
@@ -216,6 +224,8 @@ public class Ventana extends javax.swing.JFrame
         Resultados.setMinimumSize(new java.awt.Dimension(248, 250));
         Resultados.setPreferredSize(new java.awt.Dimension(248, 250));
 
+        Aleatorio.setText("<html>\n<body>Generar<br/>aleatoriamente</body>\n</html>");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -230,7 +240,10 @@ public class Ventana extends javax.swing.JFrame
                             .addComponent(Barcos, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(etiquetaResultados)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(etiquetaResultados)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Aleatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(2, 2, 2)
                                 .addComponent(Resultados, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,11 +266,14 @@ public class Ventana extends javax.swing.JFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Turno)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(etiquetaResultados)
-                    .addComponent(etiquetaBarcos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Turno)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(etiquetaResultados)
+                            .addComponent(etiquetaBarcos)))
+                    .addComponent(Aleatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -321,7 +337,15 @@ public class Ventana extends javax.swing.JFrame
         }
         //</editor-fold>
         
-        String nickname = (String)JOptionPane.showInputDialog(null, Textos.WELCOMETEXT + "\n" + Textos.ASKNICKNAME, "Nombre de Usuario", JOptionPane.QUESTION_MESSAGE, null, null, null);
+        String nickname = "";
+        
+        do
+        {
+            nickname = (String)JOptionPane.showInputDialog(null, Textos.WELCOMETEXT + "\n" + Textos.ASKNICKNAME, "Nombre de Usuario", JOptionPane.QUESTION_MESSAGE, null, null, null);
+            if(!comprobarNickname(nickname))
+                JOptionPane.showMessageDialog(null, Textos.NOTVALIDNAME, "Error", JOptionPane.ERROR_MESSAGE);
+        }while(!comprobarNickname(nickname));
+        
         try
         {    
             if(!nickname.isEmpty())
@@ -366,7 +390,7 @@ public class Ventana extends javax.swing.JFrame
     {
         if(buscarPartida())
             this.borrarPartida();
-        this.insertarBarcos(this.j2, "src/Datos/posiciones.csv"); 
+        insertarBarcosAleatorio(j2);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() ->
         {
@@ -375,6 +399,7 @@ public class Ventana extends javax.swing.JFrame
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Aleatorio;
     private javax.swing.JTextPane Barcos;
     private javax.swing.JButton Cancelar;
     private javax.swing.JLabel Columna;
@@ -504,8 +529,24 @@ public class Ventana extends javax.swing.JFrame
      */
      private boolean comprobarDireccion(char direccion)
      {
-         return (direccion == Textos.HORIZONTAL || direccion == Textos.VERTICAL
-                 || direccion == Textos.DIAGONAL || direccion == Textos.INVERSEDIAGONAL);
+         char dir = Character.toUpperCase(direccion);
+         return (dir == Textos.HORIZONTAL || dir == Textos.VERTICAL
+                 || dir == Textos.DIAGONAL || dir == Textos.INVERSEDIAGONAL);
+     }
+     
+     /**
+     * Comprueba que el nombre del usuario no tiene caracteres no válidos
+     * @param nombre Nombre de usuario.
+     * @return True si es valido y False si no.
+     */
+     private static boolean comprobarNickname(String nombre)
+     {
+         char[] caracteresNoValidos = {'/','\\',':','*','?','"','<','>','|'};
+         for (int i = 0; i < nombre.length(); i++) 
+             for (int j = 0; j < caracteresNoValidos.length; j++) 
+                 if(nombre.charAt(i) == caracteresNoValidos[j])
+                     return false;
+         return true;
      }
 
     /**
@@ -524,6 +565,16 @@ public class Ventana extends javax.swing.JFrame
     private char generarColumna()
     {
         return obtenerCaracter(1+(new Random().nextInt(10)));
+    }
+    
+    /**
+     * Genera un caracter entre las opciones de inserción disponible.
+     * @return Caracter generado entre V,H,I,D.
+     */
+    private char generarDireccion()
+    {
+        char[] direcciones = {Textos.VERTICAL, Textos.HORIZONTAL, Textos.DIAGONAL, Textos.INVERSEDIAGONAL};
+        return direcciones[(new Random().nextInt(3))];
     }
 
     /**
@@ -590,6 +641,45 @@ public class Ventana extends javax.swing.JFrame
         {
             JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    /**
+     * Inserta los barcos en la posición que indique el jugador.
+     * <br/>
+     * Empieza con el portaaviones, buque, submarino y acaba con la lancha.
+     * @param j1 Jugador en el que se van a introducir los barcos según indique 
+     * el usuario
+     */
+    private void insertarBarcosAleatorio(Jugador j1)
+    {
+        System.out.println("Insertando barcos del jugador " + j1.getNickname());
+
+        char dir, columna;
+
+        int fila;
+
+        for(; j1.getContador() < j1.getListaBarcos().size();)
+        {
+            try
+            {
+                dir = generarDireccion();
+                fila = generarFila();
+                columna = generarColumna();
+                
+                if(comprobarDireccion(dir))
+                    if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(j1.getContador())))
+                    {
+                        Barcos.setEditable(true);
+                        this.Barcos = j1.getTableroBarcos().imprimirTableroInterfaz(Barcos);
+                        Barcos.setEditable(false);
+                        j1.sumContador();
+                    }
+            } catch (ExcepcionesBarco | NumberFormatException ex)
+            {
+                
+            }
+        }
+        setEstado();
     }
     
     /**

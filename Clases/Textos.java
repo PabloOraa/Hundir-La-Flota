@@ -223,6 +223,10 @@ public interface Textos
      */
     String NOTVALIDDIR= "La direccion de insercion indicada no es valida.";
     /**
+     * El usuario ha introducido mal el nombre de usuario.
+     */
+    String NOTVALIDNAME = "El nombre introducido tiene carácteres no validos.";
+    /**
      * Cadena de texto para indicar que se ha encontrado una partida guardada.
      */
     String SAVEFILEFOUND = "Se ha encontrado una partida guardada ";
