@@ -132,11 +132,11 @@ public class Ventana extends javax.swing.JFrame
                     }
                 }
             }
-            JOptionPane.showMessageDialog(null, j1.getNickname() + ": "+ res + "\n" + j2.getNickname() + ": " + resultadoDisparocpu, "Resultado del disparo",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, j1.getNickname() + ": "+ res + "\n" + j2.getNickname() + ": " + resultadoDisparocpu, "Resultado del disparo",JOptionPane.INFORMATION_MESSAGE);
             imprimirTableros(j1);
         } catch (ExcepcionesBarco ex)
         {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -146,7 +146,7 @@ public class Ventana extends javax.swing.JFrame
      */
     private void mostrarGanador(Jugador player)
     {
-        JOptionPane.showMessageDialog(null, "Enhorabuena " + player.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Enhorabuena " + player.getNickname() + " has ganado", "Ganador",JOptionPane.INFORMATION_MESSAGE);
         if(this.buscarPartida())
             this.borrarPartida();
         Guardar.setEnabled(false);
@@ -161,7 +161,8 @@ public class Ventana extends javax.swing.JFrame
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         etiquetaBarcos = new javax.swing.JLabel();
         etiquetaResultados = new javax.swing.JLabel();
@@ -179,8 +180,9 @@ public class Ventana extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hundir la Flota");
-        setLocation((getToolkit().getScreenSize().width/2)-(getWidth()/2),(getToolkit().getScreenSize().height/2)-(getHeight()/2));
         setMinimumSize(new java.awt.Dimension(650, 400));
+        setPreferredSize(new java.awt.Dimension(650, 400));
+        setLocation((getToolkit().getScreenSize().width/2)-(getWidth()/2),(getToolkit().getScreenSize().height/2)-(getHeight()/2));
         setResizable(false);
 
         etiquetaBarcos.setText(Barcos.getName());
@@ -482,7 +484,7 @@ public class Ventana extends javax.swing.JFrame
         }
         catch (IOException ex) 
         {
-            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(this,ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
@@ -506,9 +508,9 @@ public class Ventana extends javax.swing.JFrame
             this.j1 = (Jugador) ois.readObject();
             j2 = (Jugador) ois.readObject();
         } catch (EOFException ex) {
-            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(this,ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException | ClassNotFoundException ex) {
-            System.err.println(ex.getMessage());
+            JOptionPane.showMessageDialog(this,ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -623,7 +625,7 @@ public class Ventana extends javax.swing.JFrame
         System.out.println("Insertando barcos del jugador " + j1.getNickname());
         try
         {
-            char dir = ((String)JOptionPane.showInputDialog(null, "¿En que dirección quieres que se introduzca el barco?", "Dirección", JOptionPane.QUESTION_MESSAGE)).charAt(0);
+            char dir = ((String)JOptionPane.showInputDialog(this, "¿En que dirección quieres que se introduzca el barco?", "Dirección", JOptionPane.QUESTION_MESSAGE)).charAt(0);
             if(comprobarDireccion(dir))
                 if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(j1.getContador())))
                 {
@@ -635,12 +637,12 @@ public class Ventana extends javax.swing.JFrame
                        this.setEstado(); 
                 }
                 else
-                    JOptionPane.showMessageDialog(null, Textos.NOTVALIDFIELDS, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, Textos.NOTVALIDFIELDS, "Error", JOptionPane.ERROR_MESSAGE);
 	    else
-		JOptionPane.showMessageDialog(null, Textos.NOTVALIDDIR, "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, Textos.NOTVALIDDIR, "Error", JOptionPane.ERROR_MESSAGE);
         } catch (ExcepcionesBarco ex)
         {
-            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -653,10 +655,7 @@ public class Ventana extends javax.swing.JFrame
      */
     private void insertarBarcosAleatorio(Jugador j1)
     {
-        System.out.println("Insertando barcos del jugador " + j1.getNickname());
-
         char dir, columna;
-
         int fila;
 
         for(; j1.getContador() < j1.getListaBarcos().size();)
