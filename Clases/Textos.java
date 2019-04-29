@@ -2,7 +2,7 @@ package Clases;
 
 /**
  * Textos de la aplicación
- * @Version 1.4.1
+ * @Version 2.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public interface Textos 

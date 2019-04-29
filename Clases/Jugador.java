@@ -3,10 +3,11 @@ package Clases;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  * Clase Jugador que representa a cada uno de los miembros de la partida
- * @Version 1.4.1
+ * @Version 2.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Jugador implements Serializable
@@ -129,15 +130,22 @@ public class Jugador implements Serializable
     /**
      * Inserta los barcos del jugador a partir de un fichero CSV
      * @param archivo Archivo CSV con los barcos a insertar.
-     * @return True si se han insertado correctamente.
+     * @return ArrayList con dos valores, el primero un boolean con verdadero si lo ha hecho corretamente y falso si no.<br/>El segundo valor es un número con los barcos insertados.
      */
-    public boolean insertarBarco(File archivo)
+    public ArrayList insertarBarco(File archivo)
     {
+        ArrayList resultados = new ArrayList();
         try {
-            return tableroBarcos.insertar(archivo);
+            ArrayList arr = tableroBarcos.insertar(archivo);
+            resultados.add(arr.get(0));
+            resultados.add(arr.get(1));
         } catch (ExcepcionesBarco ex) {
-            System.err.println(ex.getMessage());
-            return false;
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            resultados.add(false);
+            resultados.add(0);
+        } finally
+        {
+            return resultados;
         }
     }
     

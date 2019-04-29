@@ -10,15 +10,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerListModel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 
 /**
  * Ventana de la aplicación
- * @version 1.4.1
+ * @version 2.0
  * @author Pablo Oraa Lopez
  */
 public class Ventana extends javax.swing.JFrame
@@ -44,6 +48,7 @@ public class Ventana extends javax.swing.JFrame
      */
     private void asignarBotones()
     {
+        Ventana programa = this;
         Cancelar.addMouseListener(new MouseAdapter()
         {
             @Override
@@ -86,7 +91,35 @@ public class Ventana extends javax.swing.JFrame
             {
                 insertarBarcosAleatorio(j1); 
                 Aleatorio.setVisible(false);
+                ficheroCSV.setVisible(false);
                 setEstado();
+            }
+        });
+        
+        ficheroCSV.addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseClicked(MouseEvent e) 
+            {
+                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                FileNameExtensionFilter csv = new FileNameExtensionFilter("Archivo CSV", "csv");
+                jfc.addChoosableFileFilter(csv);
+                jfc.setDialogTitle("Elige el archivo csv que quieras insertar barcos");
+        
+                int res = jfc.showDialog(programa, "Este");
+        
+                if(res == JFileChooser.APPROVE_OPTION)
+                {
+                    String pathBarcos = jfc.getSelectedFile().getAbsolutePath();
+                    insertarBarcos(j1, pathBarcos);
+                 
+                    if(j1.getContador() == 4)
+                    {
+                        ficheroCSV.setVisible(false);
+                        Aleatorio.setVisible(false);
+                        setEstado();
+                    }
+                }
             }
         });
     }
@@ -177,12 +210,13 @@ public class Ventana extends javax.swing.JFrame
         Barcos = new javax.swing.JTextPane();
         Resultados = new javax.swing.JTextPane();
         Aleatorio = new javax.swing.JButton();
+        ficheroCSV = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hundir la Flota");
+        setLocation((getToolkit().getScreenSize().width/2)-(getWidth()/2),(getToolkit().getScreenSize().height/2)-(getHeight()/2));
         setMinimumSize(new java.awt.Dimension(650, 400));
         setPreferredSize(new java.awt.Dimension(650, 400));
-        setLocation((getToolkit().getScreenSize().width/2)-(getWidth()/2),(getToolkit().getScreenSize().height/2)-(getHeight()/2));
         setResizable(false);
 
         etiquetaBarcos.setText(Barcos.getName());
@@ -206,7 +240,7 @@ public class Ventana extends javax.swing.JFrame
 
         Turno.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         Turno.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Turno.setText("Turno de " + j1.getNickname()
+        Turno.setText(textoTurno()
         );
 
         Guardar.setText("Guardar");
@@ -227,7 +261,10 @@ public class Ventana extends javax.swing.JFrame
         Resultados.setMinimumSize(new java.awt.Dimension(248, 250));
         Resultados.setPreferredSize(new java.awt.Dimension(248, 250));
 
-        Aleatorio.setText("<html>\n<body>Generar<br/>aleatoriamente</body>\n</html>");
+        Aleatorio.setText("<html>\n<body>Random</body>\n</html>");
+
+        ficheroCSV.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        ficheroCSV.setText("Fichero CSV");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -236,7 +273,6 @@ public class Ventana extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Turno, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(etiquetaBarcos)
@@ -262,8 +298,13 @@ public class Ventana extends javax.swing.JFrame
                                             .addComponent(EleccionColumna)))
                                     .addComponent(InsertarDisparar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(Cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
-                .addGap(16, 16, 16))
+                                    .addComponent(Guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(16, 16, 16))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(Turno, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ficheroCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,11 +313,15 @@ public class Ventana extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Turno)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(etiquetaResultados)
                             .addComponent(etiquetaBarcos)))
-                    .addComponent(Aleatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(ficheroCSV)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Aleatorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -299,12 +344,20 @@ public class Ventana extends javax.swing.JFrame
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Resultados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(Barcos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(24, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private String textoTurno()
+    {
+        if(this.getEstado().equals(Textos.SHOOT))
+            return "Turno de " + j1.getNickname();
+        else
+            return "Inserta " + j1.getNickname();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -415,6 +468,7 @@ public class Ventana extends javax.swing.JFrame
     private javax.swing.JLabel Turno;
     private javax.swing.JLabel etiquetaBarcos;
     private javax.swing.JLabel etiquetaResultados;
+    private javax.swing.JButton ficheroCSV;
     // End of variables declaration//GEN-END:variables
     /**
      * Cadena que marca el estado del juego en función de Insertar Barco o disparar
@@ -629,9 +683,7 @@ public class Ventana extends javax.swing.JFrame
             if(comprobarDireccion(dir))
                 if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(j1.getContador())))
                 {
-                    Barcos.setEditable(true);
-                    this.Barcos = j1.getTableroBarcos().imprimirTableroInterfaz(Barcos);
-                    Barcos.setEditable(false);
+                    imprimirTableros(j1);
                     j1.sumContador();
                     if(j1.getContador() == 4)
                        this.setEstado(); 
@@ -669,9 +721,7 @@ public class Ventana extends javax.swing.JFrame
                 if(comprobarDireccion(dir))
                     if(j1.insertarBarco(dir, fila, columna, j1.getListaBarcos().get(j1.getContador())))
                     {
-                        Barcos.setEditable(true);
-                        this.Barcos = j1.getTableroBarcos().imprimirTableroInterfaz(Barcos);
-                        Barcos.setEditable(false);
+                        imprimirTableros(j1);
                         j1.sumContador();
                     }
             } catch (ExcepcionesBarco | NumberFormatException ex)
@@ -688,10 +738,17 @@ public class Ventana extends javax.swing.JFrame
      * el usuario
      * @param path Ruta en la que se encuentra el archivo CSV con los barcos a 
      * insertar.
+     * @return True si lo ha hecho correctamente y false si no.
      */
     private boolean insertarBarcos(Jugador j1, String path)
     {
         System.out.println("Insertando barcos del jugador " + j1.getNickname());
-        return j1.insertarBarco(new File(path));
+        ArrayList arr = j1.insertarBarco(new File(path));
+        boolean resultado = (boolean)arr.get(0);
+        int barcosInsertados = (int)arr.get(1);
+        for (int i = 0; i < barcosInsertados; i++)
+            j1.sumContador();
+        imprimirTableros(j1);
+        return resultado;
     }
 }

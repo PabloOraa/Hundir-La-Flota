@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -14,7 +15,7 @@ import javax.swing.text.StyleContext;
 
 /**
  * Clase Tablero que representa el tablero de un jugador
- * @Version 1.4.1
+ * @Version 2.0
  * @author Enrique Dominguez, David Mateos, Pablo Oraa
  */
 public class Tablero implements Serializable
@@ -303,11 +304,14 @@ public class Tablero implements Serializable
      * Inserta en el tablero en función de un archivo csv que se pase con la estructura
      * Direccion;Columna;Fila;Barco gracias a la libreria javacsv
      * @param archivo Archivo csv que incluye las coordenadas de cada uno de los barcos de un jugador.
-     * @return True si se ha insertado correctamente y false si no.
+     * @return ArrayList con dos valores, el primero un boolean con verdadero si lo ha hecho corretamente y falso si no.<br/>El segundo valor es un número con los barcos insertados.
      * @throws Clases.ExcepcionesBarco con el mensaje Archivo no encontrado en caso de que ocurra.
      */
-    public boolean insertar(File archivo) throws ExcepcionesBarco
+    public ArrayList insertar(File archivo) throws ExcepcionesBarco
     {
+        ArrayList resultados = new ArrayList();
+        boolean res = false;
+        int cont = 0;
         try
         {
             CsvReader csvr = new CsvReader(archivo.getAbsolutePath(), ';');
@@ -321,9 +325,10 @@ public class Tablero implements Serializable
                 char columna = csvr.get(1).charAt(0);
                 Barco brc = new Barco(Barco.obtenerNombre(csvr.get(3)), csvr.get(3).length());
             
-                insertar(dir,fila,columna,brc);
+                if(insertar(dir,fila,columna,brc))
+                    cont++;
             }
-            return true;
+            res = true;
         } catch (FileNotFoundException ex )
         {
             System.err.println(Textos.FILENOTFOUND);
@@ -331,7 +336,12 @@ public class Tablero implements Serializable
         {
             System.err.println(Textos.READERROR);
         }
-        return false;
+        finally 
+        {
+            resultados.add(res);
+            resultados.add(cont);
+            return resultados;
+        }
     }
 
     /**
