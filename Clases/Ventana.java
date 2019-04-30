@@ -1,5 +1,6 @@
 package Clases;
 
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.EOFException;
@@ -39,6 +40,9 @@ public class Ventana extends javax.swing.JFrame
         j2 = new Jugador(Textos.NPC);
         path = System.getProperty("user.home") + "/Desktop/"+j1.getNickname()+".save";
         initComponents();
+        etiquetaBarcos.setText(Barcos.getName());
+        etiquetaResultados.setText(Resultados.getName());
+        Turno.setText(textoTurno());
         asignarBotones();
     }
     
@@ -93,6 +97,7 @@ public class Ventana extends javax.swing.JFrame
                 Aleatorio.setVisible(false);
                 ficheroCSV.setVisible(false);
                 setEstado();
+                Turno.setText(textoTurno());
             }
         });
         
@@ -118,6 +123,7 @@ public class Ventana extends javax.swing.JFrame
                         ficheroCSV.setVisible(false);
                         Aleatorio.setVisible(false);
                         setEstado();
+                        Turno.setText(textoTurno());
                     }
                 }
             }
@@ -220,8 +226,10 @@ public class Ventana extends javax.swing.JFrame
         setResizable(false);
 
         etiquetaBarcos.setText(Barcos.getName());
+        etiquetaBarcos.setName("Barcos"); // NOI18N
 
         etiquetaResultados.setText(Resultados.getName());
+        etiquetaResultados.setName("Resultados"); // NOI18N
 
         Fila.setText("Fila");
 
@@ -251,6 +259,7 @@ public class Ventana extends javax.swing.JFrame
         Barcos.setAutoscrolls(false);
         Barcos.setMaximumSize(new java.awt.Dimension(248, 250));
         Barcos.setMinimumSize(new java.awt.Dimension(248, 250));
+        Barcos.setName("Barcos"); // NOI18N
         Barcos.setPreferredSize(new java.awt.Dimension(248, 250));
 
         Resultados.setEditable(false);
@@ -259,6 +268,7 @@ public class Ventana extends javax.swing.JFrame
         Resultados.setAutoscrolls(false);
         Resultados.setMaximumSize(new java.awt.Dimension(248, 250));
         Resultados.setMinimumSize(new java.awt.Dimension(248, 250));
+        Resultados.setName("Resultados"); // NOI18N
         Resultados.setPreferredSize(new java.awt.Dimension(248, 250));
 
         Aleatorio.setText("<html>\n<body>Random</body>\n</html>");
@@ -298,13 +308,12 @@ public class Ventana extends javax.swing.JFrame
                                             .addComponent(EleccionColumna)))
                                     .addComponent(InsertarDisparar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(Cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addGap(16, 16, 16))
+                                    .addComponent(Guardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Turno, javax.swing.GroupLayout.PREFERRED_SIZE, 502, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ficheroCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(16, 16, 16))))
+                        .addComponent(ficheroCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,10 +361,23 @@ public class Ventana extends javax.swing.JFrame
 
     private String textoTurno()
     {
+        int valor = (j1.getNickname().length() + getEstado().length() + 1)*Turno.getFont().getSize()/3;
+        if(Turno.getSize().width > valor)
+            reducirFuente(); //Lo coge hasta 21 carácteres
+        
         if(this.getEstado().equals(Textos.SHOOT))
             return "Turno de " + j1.getNickname();
         else
             return "Inserta " + j1.getNickname();
+    }
+    
+    private void reducirFuente()
+    {
+        Turno.setFont(new Font(Turno.getFont().getName(), Turno.getFont().getStyle(), Turno.getFont().getSize()-2));
+        
+        int valor = (j1.getNickname().length() + getEstado().length() + 1)*Turno.getFont().getSize()/3;
+        if(Turno.getSize().width < valor)
+            reducirFuente();
     }
     
     /**
